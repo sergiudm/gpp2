@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08111f" />
+    <meta name="description" content="From maze-solving specialists to reinforcement learning for general-purpose language models." />
+    <meta property="og:title" content="Can RL Finally Generalize?" />
+    <meta property="og:description" content="From Mazes to Reasoning: reinforcement learning in the LLM era" />
+    <meta property="og:image" content="./assets/rl-maze-hero.png" />
+    <title>Can RL Finally Generalize?</title>
+  </head>
+  <body>
+    <canvas id="ambient" aria-hidden="true"></canvas>
+    <div id="deck-hud" aria-hidden="true">
+      <span>RL × LLM</span><span id="slide-count">01 / 18</span>
+    </div>
+    <div class="reveal">
+      <div class="slides">
+        <section class="hero-slide" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.38">
+          <div class="hero-copy">
+            <p class="eyebrow">REINFORCEMENT LEARNING × LARGE LANGUAGE MODELS</p>
+            <h1>Can RL Finally<br /><em>Generalize?</em></h1>
+            <p class="dek">From Mazes to Reasoning</p>
+            <p class="byline">Manqi Luo · Qijun Han</p>
+          </div>
+          <div class="scroll-cue">Press → to begin <span>→</span></div>
+          <aside class="notes">Opening question: if an AI receives only a reward at the finish line, can it learn how to think? We begin with the classic maze.</aside>
+        </section>
+
+        <section class="maze-slide">
+          <header>
+            <p class="kicker">01 · THE LOOP</p>
+            <h2>Forget equations for a moment: get one dot out of a maze</h2>
+          </header>
+          <div class="maze-stage">
+            <div class="maze" role="img" aria-label="Animation of a reinforcement learning agent exploring a maze">
+              <div class="maze-grid"></div>
+              <div class="goal">+1</div>
+              <div class="agent"><span></span></div>
+              <svg class="trail" viewBox="0 0 600 360" preserveAspectRatio="none" aria-hidden="true">
+                <path class="bad" d="M55,308 L55,248 L155,248 L155,128 L255,128 L255,68" />
+                <path class="bad bad-2" d="M55,308 L55,248 L155,248 L155,188 L355,188 L355,308" />
+                <path class="good" d="M55,308 L55,248 L155,248 L155,188 L255,188 L255,248 L455,248 L455,128 L555,128 L555,68" />
+              </svg>
+            </div>
+            <div class="maze-copy">
+              <div class="attempt fragment fade-up"><span>TRY 01</span><b>Hits a wall</b><i>−0.1</i></div>
+              <div class="attempt fragment fade-up"><span>TRY 17</span><b>Long detour</b><i>0</i></div>
+              <div class="attempt success fragment fade-up"><span>TRY 83</span><b>Reaches goal</b><i>+1</i></div>
+              <p class="fragment fade-up">No demonstration of the “right path.”<br /><strong>Only outcomes.</strong></p>
+            </div>
+          </div>
+          <aside class="notes">The agent keeps trying paths. We never tell it what to do step by step; we only evaluate outcomes. Advance three times to reveal failure, exploration, and success.</aside>
+        </section>
+
+        <section class="loop-slide" data-auto-animate>
+          <header>
+            <p class="kicker">THE RL LOOP</p>
+            <h2>RL does not memorize an answer. <em>It makes good outcomes more likely.</em></h2>
+          </header>
+          <div class="loop-orbit" aria-label="Reinforcement learning loop: state, action, outcome, reward, and policy update">
+            <svg viewBox="0 0 1000 500" aria-hidden="true">
+              <path id="orbit-path" d="M188 250 C 260 55, 735 55, 812 250 C 735 445, 260 445, 188 250" />
+              <path class="orbit-progress" d="M188 250 C 260 55, 735 55, 812 250 C 735 445, 260 445, 188 250" />
+            </svg>
+            <div class="orbit-node node-state fragment fade-up" style="--x:16%;--y:50%"><small>STATE</small><b>Where am I?</b><span>s<sub>t</sub></span></div>
+            <div class="orbit-node node-action fragment fade-up" style="--x:37%;--y:16%"><small>ACTION</small><b>Where next?</b><span>a<sub>t</sub></span></div>
+            <div class="orbit-node node-outcome fragment fade-up" style="--x:68%;--y:16%"><small>OUTCOME</small><b>What happened?</b><span>s<sub>t+1</sub></span></div>
+            <div class="orbit-node node-reward fragment fade-up" style="--x:84%;--y:50%"><small>REWARD</small><b>Was it good?</b><span>r<sub>t</sub></span></div>
+            <div class="orbit-node node-update fragment fade-up" style="--x:50%;--y:82%"><small>UPDATE</small><b>Prefer it next time</b><span>π ← π′</span></div>
+            <div class="policy-core"><span>POLICY</span><strong>π<sub>θ</sub></strong><i>“behavior habit”</i></div>
+          </div>
+          <p class="bottom-claim fragment fade-up">Objective: <span>maximize</span> expected cumulative reward, not copy one canonical route.</p>
+          <aside class="notes">Reveal the five elements in order. A policy is the agent's behavioral habit: which action it tends to choose in each state. We keep the loop and skip the Bellman equation.
+
+[Sources]
+Sutton & Barto, Reinforcement Learning: An Introduction, 2nd ed. http://incompleteideas.net/book/the-book-2nd.html</aside>
+        </section>
+
+        <section class="history-slide" data-background-image="./assets/rl-history-triptych.png" data-background-opacity="0.40">
+          <div class="history-shade"></div>
+          <header>
+            <p class="kicker">SPECIALISTS</p>
+            <h2>Old-school RL was astonishingly strong — inside one world</h2>
+          </header>
+          <div class="history-line">
+            <article class="fragment fade-up"><time>2015</time><h3>DQN</h3><p>Learns 49 Atari games<br />directly from pixels</p></article>
+            <article class="fragment fade-up"><time>2016</time><h3>AlphaGo</h3><p>Starts from expert games,<br />then surpasses humans via self-play</p></article>
+            <article class="fragment fade-up"><time>2019</time><h3>AlphaStar</h3><p>Multi-agent RL reaches<br />Grandmaster in StarCraft II</p></article>
+            <article class="alphafold-note fragment fade-up"><time>2020</time><h3>AlphaFold</h3><p>Another “Alpha” milestone —<br /><strong>but not an RL model</strong></p></article>
+          </div>
+          <p class="slide-cite"><a href="https://www.nature.com/articles/nature14236">Mnih et al., 2015</a> · <a href="https://deepmind.google/research/alphago/">AlphaGo</a> · <a href="https://deepmind.google/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/">AlphaStar</a> · <a href="https://www.nature.com/articles/s41586-021-03819-2">AlphaFold</a></p>
+          <aside class="notes">A useful correction: AlphaFold has “Alpha” in its name, but its protein-structure predictor is not an RL model. It appears here to represent the era's pattern: extremely strong systems, each built for a specialized domain.
+
+[Sources]
+Mnih et al., Human-level control through deep reinforcement learning. https://www.nature.com/articles/nature14236
+Google DeepMind, AlphaGo. https://deepmind.google/research/alphago/
+Google DeepMind, AlphaStar. https://deepmind.google/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/
+Jumper et al., Highly accurate protein structure prediction with AlphaFold. https://www.nature.com/articles/s41586-021-03819-2</aside>
+        </section>
+
+        <section class="transfer-slide">
+          <header>
+            <p class="kicker">THE TRANSFER GAP</p>
+            <h2>Change the world, and the skill often <em>does not transfer</em></h2>
+          </header>
+          <div class="world-transfer">
+            <div class="world world-a">
+              <small>WORLD A</small><b>Go</b>
+              <div class="mini-grid"><i></i><i></i><i></i><i></i><i></i></div>
+              <span class="score">SUPERHUMAN</span>
+            </div>
+            <div class="transfer-arrow">
+              <svg viewBox="0 0 300 90" aria-hidden="true"><path d="M10 45 H268 M241 18 L270 45 L241 72" /></svg>
+              <strong class="fragment fade-in">✕</strong><span class="fragment fade-in">The same policy does not transfer</span>
+            </div>
+            <div class="world world-b">
+              <small>WORLD B</small><b>Web navigation</b>
+              <div class="browser-ghost"><i></i><i></i><i></i></div>
+              <span class="score dim">START OVER</span>
+            </div>
+          </div>
+          <div class="three-missing">
+            <p class="fragment fade-up"><span>01</span><b>Narrow action space</b><small>Board coordinates ≠ mouse and language</small></p>
+            <p class="fragment fade-up"><span>02</span><b>Specialized environment</b><small>A game score does not define real goals</small></p>
+            <p class="fragment fade-up"><span>03</span><b>Nearly from scratch</b><small>No broad commonsense or language prior</small></p>
+          </div>
+          <aside class="notes">This is not a claim that algorithms can never cross tasks. The action space, environment, reward, and initial knowledge were usually designed around one world. Specialized RL resembles a world champion in exactly one sport.</aside>
+        </section>
+
+        <section class="hinge-slide" data-background-color="#f2eee4">
+          <p class="kicker dark">THE HINGE</p>
+          <div class="hinge-copy">
+            <h2>Maybe the missing piece<br />was not a smarter RL algorithm.</h2>
+            <div class="hinge-word fragment fade-up">PRIOR<span>the starting bias</span></div>
+            <p class="fragment fade-up">It was a starting point that had already read the world — and could reason in language.</p>
+          </div>
+          <aside class="notes">The hinge: Shunyu Yao's “The Second Half” argues that the overlooked variable was the prior. Before any RL, an LLM has already absorbed broad patterns, commonsense, and language through pretraining.
+
+[Sources]
+Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
+        </section>
+
+        <section class="pipeline-slide">
+          <header>
+            <p class="kicker">ONE TRAINING SYSTEM</p>
+            <h2>RL is not SFT's opponent. It is one stage in a training system.</h2>
+          </header>
+          <div class="pipeline" aria-label="High-level stages of large language model training">
+            <article class="fragment fade-up"><span>01</span><small>PRE-TRAIN</small><b>Learn language and the world</b><p>Massive corpora · next-token prediction</p></article>
+            <i class="pipe-arrow">→</i>
+            <article class="fragment fade-up"><span>02</span><small>MID-TRAIN</small><b>Build domain capabilities</b><p>Math · code · long context</p></article>
+            <i class="pipe-arrow">→</i>
+            <article class="fragment fade-up"><span>03</span><small>SFT / COLD START</small><b>Learn how to respond</b><p>Format · instructions · demonstrations</p></article>
+            <i class="pipe-arrow">→</i>
+            <article class="rl-stage fragment fade-up"><span>04</span><small>RL</small><b>Improve from outcomes</b><p>Explore · reward · update policy</p></article>
+            <i class="pipe-arrow">→</i>
+            <article class="fragment fade-up"><span>05</span><small>DISTILL / POLISH</small><b>Compress and refine</b><p>Efficiency · readability · safety</p></article>
+          </div>
+          <div class="pipeline-caption fragment fade-up"><strong>Capability does not appear from nowhere at the last stop.</strong><span>What RL can amplify depends on where earlier stages place the model.</span></div>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2203.02155">Ouyang et al., 2022</a> · <a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1, 2025</a></p>
+          <aside class="notes">This slide prevents a false SFT-versus-RL dichotomy. Exact pipelines vary, but the high-level pattern is similar: learn the world, shape behavior, improve from feedback, then often distill and refine for safety or efficiency.
+
+[Sources]
+Ouyang et al., Training language models to follow instructions with human feedback. https://arxiv.org/abs/2203.02155
+DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
+        </section>
+
+        <section class="mapping-slide">
+          <header>
+            <p class="kicker">RL, RE-MAPPED</p>
+            <h2>Put an LLM back in the maze: every RL element is still there</h2>
+          </header>
+          <div class="mapping-stage">
+            <div class="prompt-stream">
+              <span class="user-token">prompt</span>
+              <span class="thought-token fragment fade-in">analyze</span>
+              <span class="thought-token fragment fade-in">attempt</span>
+              <span class="tool-token fragment fade-in">use tool</span>
+              <span class="thought-token fragment fade-in">revise</span>
+              <span class="answer-token fragment fade-in">answer</span>
+              <span class="verdict fragment fade-in">✓ reward = 1</span>
+            </div>
+            <div class="mapping-labels">
+              <article class="fragment fade-up"><small>STATE · s<sub>t</sub></small><b>Prompt + conversation history + tool results</b></article>
+              <article class="fragment fade-up"><small>ACTION · a<sub>t</sub></small><b>Next token, reasoning span, or tool call</b></article>
+              <article class="fragment fade-up"><small>POLICY · π<sub>θ</sub></small><b>The LLM's probability distribution over what comes next</b></article>
+              <article class="fragment fade-up"><small>REWARD · r</small><b>Human preference, a reward model, or a verifiable result</b></article>
+            </div>
+          </div>
+          <p class="bottom-claim fragment fade-up">Language turns “thinking” itself into an action.</p>
+          <aside class="notes">The state is not only the prompt; it includes what the model has already produced and any tool results. An action may be one token, one reasoning span, or an entire response trajectory. The key intuition is that reasoning enters the action space.</aside>
+        </section>
+
+        <section class="prior-slide">
+          <header>
+            <p class="kicker">WHY NOW?</p>
+            <h2>An infinite action space should be a disaster. <em>A strong prior makes it an opportunity.</em></h2>
+          </header>
+          <div class="prior-field">
+            <div class="noise-cloud" aria-hidden="true">
+              <span>random tokens</span><span>irrelevant answer</span><span>dead loop</span><span>syntax error</span><span>hallucination</span><span>empty action</span>
+            </div>
+            <div class="prior-beam">
+              <small>LANGUAGE PRIOR</small>
+              <p>“understand → decompose → attempt → verify”</p>
+              <div class="beam-line"></div>
+              <strong class="fragment fade-up">high-probability region</strong>
+            </div>
+            <div class="reward-target"><i></i><b>useful solution</b><small>REWARD ↑</small></div>
+          </div>
+          <blockquote class="fragment fade-up">Pretraining is not RL — but it lets RL begin far from random.</blockquote>
+          <p class="slide-cite"><a href="https://ysymyth.github.io/The-Second-Half/">Yao, The Second Half, 2025</a></p>
+          <aside class="notes">In classical RL, adding infinitely many actions would make exploration nearly impossible. An LLM's distribution is not uniform: it concentrates probability on language-like, reasoning-like behaviors, making open-ended exploration tractable.
+
+[Sources]
+Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
+        </section>
+
+        <section class="rlvr-slide">
+          <header>
+            <p class="kicker">RL WITH VERIFIABLE REWARDS</p>
+            <h2>RLVR works first in math and code because correctness is cheap to check</h2>
+          </header>
+          <div class="verifier-equation">
+            <div class="task-glyph">?</div><i>→</i>
+            <div class="sample-stack"><span>y₁</span><span>y₂</span><span>y₃</span><span>…</span></div><i>→</i>
+            <div class="checker-glyph"><b>CHECK</b><span>unit tests / exact answer</span></div><i>→</i>
+            <div class="reward-glyph"><span>0</span><span>1</span><span>0</span></div>
+          </div>
+          <div class="rlvr-why">
+            <p class="fragment fade-up"><b>Scalable</b><span>No human must label every reasoning step</span></p>
+            <p class="fragment fade-up"><b>Low ambiguity</b><span>Tests pass or answers match</span></p>
+            <p class="fragment fade-up"><b>Exploratory</b><span>Many paths are allowed; outcomes decide</span></p>
+          </div>
+          <p class="caveat fragment fade-up">But “verifiable” does not mean “the verifier is always right.”</p>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1, 2025</a></p>
+          <aside class="notes">Final math answers can be checked, and code can be tested. This lets us evaluate many samples cheaply and turn correctness into a reward. DeepSeek-R1 demonstrated large-scale reasoning RL with rule-based rewards.
+
+[Sources]
+DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
+        </section>
+
+        <section class="code-slide">
+          <header>
+            <p class="kicker">ONE PROMPT · MANY TRAJECTORIES</p>
+            <h2>A demonstration gives one path. A verifier can compare many.</h2>
+          </header>
+          <div class="code-arena">
+            <div class="code-prompt"><small>TASK</small><code>Return the second-largest distinct number in a list</code></div>
+            <div class="branches">
+              <article class="candidate c1 fragment fade-up"><small>SAMPLE A</small><code>sorted(xs)[-2]</code><span>✕ fails on duplicates</span></article>
+              <article class="candidate c2 fragment fade-up"><small>SAMPLE B</small><code>max(x for x in xs<br/> if x != max(xs))</code><span>✓ tests passed</span></article>
+              <article class="candidate c3 fragment fade-up"><small>SAMPLE C</small><code>list(set(xs))[1]</code><span>✕ unstable ordering</span></article>
+            </div>
+            <div class="test-console fragment fade-up"><span>pytest</span><b>1 passed · 2 failed</b><i>policy update ↗ SAMPLE B</i></div>
+          </div>
+          <aside class="notes">SFT often gives the model one reference response. RLVR can sample several responses from the current model, run tests, and make successful trajectories more likely. This reward sees the outcome, so it may miss style, safety, or maintainability.</aside>
+        </section>
+
+        <section class="sft-rl-slide">
+          <header>
+            <p class="kicker">COOPERATION, NOT OPPOSITION</p>
+            <h2>SFT builds the runway. RL explores beyond it.</h2>
+          </header>
+          <div class="runway">
+            <div class="runway-base">
+              <small>SFT / COLD START</small>
+              <b>Format · instruction following · reasoning patterns</b>
+              <span>Moves successful behavior into sampleable range</span>
+            </div>
+            <div class="takeoff fragment fade-up">
+              <svg viewBox="0 0 800 220" aria-hidden="true"><path d="M20 190 C 280 188 410 180 520 130 S 685 48 780 34" /></svg>
+              <div class="plane">π<sub>θ</sub></div>
+              <small>RL</small>
+              <b>Explore on the model's own distribution</b>
+            </div>
+          </div>
+          <div class="exception-note fragment fade-up"><b>An exception, not a contradiction</b><p>DeepSeek-R1-Zero shows that a strong base model can learn directly through RL. Yet its readability and language-mixing problems led R1 to add cold-start data.</p></div>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2501.12948">DeepSeek-R1</a> · <a href="https://arxiv.org/abs/2501.17161">Chu et al., 2025</a></p>
+          <aside class="notes">SFT makes outputs parseable, makes rewards recoverable, and puts some successful behaviors within sampling range. R1-Zero is an important exception, but its readability problems still illustrate why stages work together.
+
+[Sources]
+DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948
+Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161</aside>
+        </section>
+
+        <section class="initialization-slide">
+          <header>
+            <p class="kicker">INITIALIZATION SHAPES THE CEILING</p>
+            <h2>RL efficiency is shaped before RL even begins</h2>
+          </header>
+          <div class="init-spectrum">
+            <article class="too-weak fragment fade-up">
+              <small>TOO WEAK</small><h3>Cannot sample success</h3>
+              <div class="sparkline"><i style="--h:12%"></i><i style="--h:8%"></i><i style="--h:15%"></i><i style="--h:9%"></i><i style="--h:12%"></i></div>
+              <p>Nearly every reward is zero<br />No learning signal</p>
+            </article>
+            <article class="sweet-spot fragment fade-up">
+              <small>USEFUL PRIOR</small><h3>Some success, still diverse</h3>
+              <div class="sparkline"><i style="--h:18%"></i><i style="--h:31%"></i><i style="--h:47%"></i><i style="--h:68%"></i><i style="--h:88%"></i></div>
+              <p>Mid-training / SFT<br />gives exploration a foothold</p>
+            </article>
+            <article class="too-narrow fragment fade-up">
+              <small>OVERFIT</small><h3>Locked into one routine</h3>
+              <div class="sparkline"><i style="--h:65%"></i><i style="--h:68%"></i><i style="--h:66%"></i><i style="--h:64%"></i><i style="--h:66%"></i></div>
+              <p>Exploration has collapsed<br />RL may not recover it</p>
+            </article>
+          </div>
+          <p class="bottom-claim fragment fade-up">Earlier stages decide <em>whether reward can be found</em>. RL decides <em>how to climb it</em>.</p>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2501.17161">Chu et al., 2025</a> · <a href="https://arxiv.org/abs/2603.17074">PRISM, 2026</a></p>
+          <aside class="notes">This is the core systems insight. If the model is too weak, successful samples are too rare. Useful mid-training or SFT supplies primitives and format. Overfitting can instead lock down exploration. The stages shape one another's ceiling.
+
+[Sources]
+Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161
+PRISM: Demystifying Retention and Interaction in Mid-Training. https://arxiv.org/abs/2603.17074</aside>
+        </section>
+
+        <section class="compare-slide">
+          <header>
+            <p class="kicker">REVIEW BY COMPARISON</p>
+            <h2>SFT learns from demonstrations. RL learns from outcomes.</h2>
+          </header>
+          <div class="compare-table" role="table" aria-label="Comparison of SFT and reinforcement learning">
+            <div class="compare-head" role="row"><span></span><b>SFT</b><b>RL</b></div>
+            <div class="compare-row fragment fade-up" role="row"><small>SIGNAL</small><p>“What should the next token be?”</p><p>“How good was the whole outcome?”</p></div>
+            <div class="compare-row fragment fade-up" role="row"><small>DATA</small><p>Fixed demonstrations · off-policy</p><p>Current-model samples · on-policy</p></div>
+            <div class="compare-row fragment fade-up" role="row"><small>BEST AT</small><p>Format, knowledge, style, cold start</p><p>Exploration, many solutions, goal optimization</p></div>
+            <div class="compare-row fragment fade-up" role="row"><small>COST</small><p>May imitate surfaces; bounded by examples</p><p>Expensive, high variance, reward-dependent</p></div>
+            <div class="compare-row fragment fade-up" role="row"><small>GENERALIZATION</small><p>Possible; depends on data and optimization</p><p>Often stronger on verifiable OOD tasks</p></div>
+          </div>
+          <p class="nuance fragment fade-up"><strong>Do not turn a finding into a law:</strong> “SFT memorizes; RL generalizes” is conditional.</p>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2501.17161">SFT Memorizes, RL Generalizes</a> · <a href="https://arxiv.org/abs/2604.06628">Rethinking Generalization in Reasoning SFT</a></p>
+          <aside class="notes">Use the comparison to review RL. Add an important qualification: recent work finds that verified long reasoning traces, sufficient optimization, and a strong base model can let SFT generalize across domains too. The better question is: under which data, model, and objective is each method appropriate?
+
+[Sources]
+Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161
+Ren et al., Rethinking Generalization in Reasoning SFT. https://arxiv.org/abs/2604.06628</aside>
+        </section>
+
+        <section class="limits-slide">
+          <header>
+            <p class="kicker">THE BILL COMES DUE</p>
+            <h2>RL is loyal to its objective — <em>even when the objective is wrong</em></h2>
+          </header>
+          <div class="limits-layout">
+            <div class="reward-hack">
+              <div class="meter"><span>REWARD</span><b>100</b><i></i></div>
+              <div class="reality"><span>REAL QUALITY</span><b>?</b></div>
+              <p class="fragment fade-up">If a verifier checks only “pass,”<br />the model may learn a shortcut.</p>
+            </div>
+            <div class="limit-list">
+              <article class="fragment fade-up"><span>01</span><b>Reward hacking</b><p>Maximizing a proxy may miss the real goal</p></article>
+              <article class="fragment fade-up"><span>02</span><b>Sparse reward</b><p>A final score cannot identify which reasoning step helped</p></article>
+              <article class="fragment fade-up"><span>03</span><b>Entropy collapse</b><p>The policy becomes safer, narrower, and less exploratory</p></article>
+              <article class="fragment fade-up"><span>04</span><b>Compute & stability</b><p>Repeated sampling, checking, and updating is costly and noisy</p></article>
+            </div>
+          </div>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2604.15149">Helff et al., 2026</a> · <a href="https://arxiv.org/abs/2503.14476">DAPO, 2025</a></p>
+          <aside class="notes">RL does not decide whether an objective is what we truly want. It becomes better at optimizing the reward we gave it. RLVR verifiers can contain loopholes, and one final reward creates a credit-assignment problem over a long reasoning chain.
+
+[Sources]
+Helff et al., LLMs Gaming Verifiers. https://arxiv.org/abs/2604.15149
+Yu et al., DAPO. https://arxiv.org/abs/2503.14476</aside>
+        </section>
+
+        <section class="opd-slide">
+          <header>
+            <p class="kicker">FUTURE · ON-POLICY DISTILLATION</p>
+            <h2>OPD lets the teacher correct mistakes the student actually makes</h2>
+          </header>
+          <div class="opd-loop">
+            <article class="student"><small>① STUDENT SAMPLES</small><b>Generate its own trajectory</b><p>Sample from the current π<sub>student</sub></p><div class="bubble">I will divide by 2…<br/>Wait, this is not even.</div></article>
+            <div class="opd-arrow">→</div>
+            <article class="teacher fragment fade-up"><small>② TEACHER FEEDBACK</small><b>Correct it where it stands</b><p>Give feedback on student-generated prefixes</p><div class="bubble teacher-bubble">Check parity at this step;<br/>the next move is more likely…</div></article>
+            <div class="opd-arrow">→</div>
+            <article class="update fragment fade-up"><small>③ UPDATE</small><b>Learn on its own distribution</b><p>Reduce train–test mismatch</p><div class="delta">D<sub>f</sub>(π<sub>T</sub> ∥ π<sub>S</sub>) ↓</div></article>
+          </div>
+          <div class="opd-bottom">
+            <p class="fragment fade-up"><strong>Like SFT:</strong> a teacher provides dense token-level information</p>
+            <p class="fragment fade-up"><strong>Like RL:</strong> data comes from the current student's on-policy trajectories</p>
+            <span class="fragment fade-up">Caveat: local teacher guidance may not align with final outcome reward.</span>
+          </div>
+          <div class="other-futures fragment fade-up"><small>TWO MORE FRONTS</small><b>Credit assignment</b><span>Attribute outcomes to the steps that mattered</span><b>Better evals</b><span>Move from benchmark climbing to real utility</span></div>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2306.13649">Agarwal et al., 2023</a> · <a href="https://ysymyth.github.io/The-Second-Half/">Yao, 2025</a></p>
+          <aside class="notes">The key difference from ordinary distillation is that OPD does not rely only on pre-generated teacher answers. The student moves first, and the teacher responds to states the student actually visits. This combines dense supervision with on-policy data. Two additional directions are better credit assignment and evaluations tied to real utility.
+
+[Sources]
+Agarwal et al., On-Policy Distillation of Language Models. https://arxiv.org/abs/2306.13649
+Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
+        </section>
+
+        <section class="takeaway-slide" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.20">
+          <div class="takeaway-shade"></div>
+          <p class="kicker">TAKEAWAY</p>
+          <h2>The maze never disappeared.<br /><em>Its walls became language.</em></h2>
+          <div class="takeaways">
+            <p class="fragment fade-up"><span>01</span>RL uses <strong>outcomes</strong> to change future behavior probabilities</p>
+            <p class="fragment fade-up"><span>02</span>A strong prior + reasoning actions make open tasks explorable</p>
+            <p class="fragment fade-up"><span>03</span>RLVR succeeds first where feedback is easy to verify</p>
+            <p class="fragment fade-up"><span>04</span>SFT, mid-training, and RL form <strong>one system</strong>, not a contest</p>
+          </div>
+          <blockquote class="fragment fade-up">RL is an amplifier: it amplifies the prior — and the reward design.</blockquote>
+          <aside class="notes">Return to the opening maze. The audience should leave with these four points. The final line emphasizes that RL amplifies both capability and mistakes in objective design.</aside>
+        </section>
+
+        <section class="sources-slide">
+          <header>
+            <p class="kicker">APPENDIX · SOURCES</p>
+            <h2>Further reading</h2>
+          </header>
+          <div class="sources-columns">
+            <div>
+              <a href="https://www.nature.com/articles/nature14236"><span>01</span><b>Human-level control through deep RL</b><small>Mnih et al. · Nature · 2015</small></a>
+              <a href="https://deepmind.google/research/alphago/"><span>02</span><b>AlphaGo</b><small>Google DeepMind</small></a>
+              <a href="https://ysymyth.github.io/The-Second-Half/"><span>03</span><b>The Second Half</b><small>Shunyu Yao · 2025</small></a>
+              <a href="https://arxiv.org/abs/2203.02155"><span>04</span><b>Training language models with human feedback</b><small>Ouyang et al. · 2022</small></a>
+              <a href="https://arxiv.org/abs/2501.12948"><span>05</span><b>DeepSeek-R1</b><small>DeepSeek-AI · 2025</small></a>
+            </div>
+            <div>
+              <a href="https://arxiv.org/abs/2501.17161"><span>06</span><b>SFT Memorizes, RL Generalizes</b><small>Chu et al. · 2025</small></a>
+              <a href="https://arxiv.org/abs/2604.06628"><span>07</span><b>Rethinking Generalization in Reasoning SFT</b><small>Ren et al. · 2026</small></a>
+              <a href="https://arxiv.org/abs/2503.14476"><span>08</span><b>DAPO</b><small>Yu et al. · 2025</small></a>
+              <a href="https://arxiv.org/abs/2306.13649"><span>09</span><b>On-Policy Distillation</b><small>Agarwal et al. · 2023</small></a>
+              <a href="https://arxiv.org/abs/2604.15149"><span>10</span><b>LLMs Gaming Verifiers</b><small>Helff et al. · 2026</small></a>
+            </div>
+          </div>
+          <p class="sources-foot">Every source is clickable · Press <kbd>S</kbd> for speaker notes · Press <kbd>F</kbd> for full screen</p>
+          <aside class="notes">This optional appendix does not need presentation time. It lists the external sources used for claims and assets.</aside>
+        </section>
+      </div>
+    </div>
+    <div id="keyboard-hint" role="status">← → navigate · F full screen · S speaker view</div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
