@@ -1,7 +1,17 @@
 import Reveal from 'reveal.js';
 import RevealNotes from 'reveal.js/plugin/notes/notes.esm.js';
+import katex from 'katex';
 import 'reveal.js/dist/reveal.css';
+import 'katex/dist/katex.min.css';
 import './styles.css';
+
+document.querySelectorAll('[data-math]').forEach((element) => {
+  katex.render(element.dataset.math, element, {
+    throwOnError: false,
+    strict: false,
+    output: 'html'
+  });
+});
 
 const deck = new Reveal({
   hash: true,

@@ -64,12 +64,12 @@
               <path id="orbit-path" d="M188 250 C 260 55, 735 55, 812 250 C 735 445, 260 445, 188 250" />
               <path class="orbit-progress" d="M188 250 C 260 55, 735 55, 812 250 C 735 445, 260 445, 188 250" />
             </svg>
-            <div class="orbit-node node-state fragment fade-up" style="--x:16%;--y:50%"><small>STATE</small><b>Where am I?</b><span>s<sub>t</sub></span></div>
-            <div class="orbit-node node-action fragment fade-up" style="--x:37%;--y:16%"><small>ACTION</small><b>Where next?</b><span>a<sub>t</sub></span></div>
-            <div class="orbit-node node-outcome fragment fade-up" style="--x:68%;--y:16%"><small>OUTCOME</small><b>What happened?</b><span>s<sub>t+1</sub></span></div>
-            <div class="orbit-node node-reward fragment fade-up" style="--x:84%;--y:50%"><small>REWARD</small><b>Was it good?</b><span>r<sub>t</sub></span></div>
-            <div class="orbit-node node-update fragment fade-up" style="--x:50%;--y:82%"><small>UPDATE</small><b>Prefer it next time</b><span>π ← π′</span></div>
-            <div class="policy-core"><span>POLICY</span><strong>π<sub>θ</sub></strong><i>“behavior habit”</i></div>
+            <div class="orbit-node node-state fragment fade-up" style="--x:16%;--y:50%"><small>STATE</small><b>Where am I?</b><span data-math="s_t"></span></div>
+            <div class="orbit-node node-action fragment fade-up" style="--x:37%;--y:16%"><small>ACTION</small><b>Where next?</b><span data-math="a_t"></span></div>
+            <div class="orbit-node node-outcome fragment fade-up" style="--x:68%;--y:16%"><small>OUTCOME</small><b>What happened?</b><span data-math="s_{t+1}"></span></div>
+            <div class="orbit-node node-reward fragment fade-up" style="--x:84%;--y:50%"><small>REWARD</small><b>Was it good?</b><span data-math="r_t"></span></div>
+            <div class="orbit-node node-update fragment fade-up" style="--x:50%;--y:82%"><small>UPDATE</small><b>Prefer it next time</b><span data-math="\pi \leftarrow \pi'"></span></div>
+            <div class="policy-core"><span>POLICY</span><strong data-math="\pi_\theta"></strong><i>“behavior habit”</i></div>
           </div>
           <p class="bottom-claim fragment fade-up">Objective: <span>maximize</span> expected cumulative reward, not copy one canonical route.</p>
           <aside class="notes">Reveal the five elements in order. A policy is the agent's behavioral habit: which action it tends to choose in each state. We keep the loop and skip the Bellman equation.
@@ -183,9 +183,9 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
               <span class="verdict fragment fade-in">✓ reward = 1</span>
             </div>
             <div class="mapping-labels">
-              <article class="fragment fade-up"><small>STATE · s<sub>t</sub></small><b>Prompt + conversation history + tool results</b></article>
-              <article class="fragment fade-up"><small>ACTION · a<sub>t</sub></small><b>Next token, reasoning span, or tool call</b></article>
-              <article class="fragment fade-up"><small>POLICY · π<sub>θ</sub></small><b>The LLM's probability distribution over what comes next</b></article>
+              <article class="fragment fade-up"><small>STATE · <span data-math="s_t"></span></small><b>Prompt + conversation history + tool results</b></article>
+              <article class="fragment fade-up"><small>ACTION · <span data-math="a_t"></span></small><b>Next token, reasoning span, or tool call</b></article>
+              <article class="fragment fade-up"><small>POLICY · <span data-math="\pi_\theta"></span></small><b>The LLM's probability distribution over what comes next</b></article>
               <article class="fragment fade-up"><small>REWARD · r</small><b>Human preference, a reward model, or a verifiable result</b></article>
             </div>
           </div>
@@ -272,7 +272,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
             </div>
             <div class="takeoff fragment fade-up">
               <svg viewBox="0 0 800 220" aria-hidden="true"><path d="M20 190 C 280 188 410 180 520 130 S 685 48 780 34" /></svg>
-              <div class="plane">π<sub>θ</sub></div>
+              <div class="plane" data-math="\pi_\theta"></div>
               <small>RL</small>
               <b>Explore on the model's own distribution</b>
             </div>
@@ -371,11 +371,11 @@ Yu et al., DAPO. https://arxiv.org/abs/2503.14476</aside>
             <h2>OPD lets the teacher correct mistakes the student actually makes</h2>
           </header>
           <div class="opd-loop">
-            <article class="student"><small>① STUDENT SAMPLES</small><b>Generate its own trajectory</b><p>Sample from the current π<sub>student</sub></p><div class="bubble">I will divide by 2…<br/>Wait, this is not even.</div></article>
+            <article class="student"><small>① STUDENT SAMPLES</small><b>Generate its own trajectory</b><p>Sample from the current <span data-math="\pi_{student}"></span></p><div class="bubble">I will divide by 2…<br/>Wait, this is not even.</div></article>
             <div class="opd-arrow">→</div>
             <article class="teacher fragment fade-up"><small>② TEACHER FEEDBACK</small><b>Correct it where it stands</b><p>Give feedback on student-generated prefixes</p><div class="bubble teacher-bubble">Check parity at this step;<br/>the next move is more likely…</div></article>
             <div class="opd-arrow">→</div>
-            <article class="update fragment fade-up"><small>③ UPDATE</small><b>Learn on its own distribution</b><p>Reduce train–test mismatch</p><div class="delta">D<sub>f</sub>(π<sub>T</sub> ∥ π<sub>S</sub>) ↓</div></article>
+            <article class="update fragment fade-up"><small>③ UPDATE</small><b>Learn on its own distribution</b><p>Reduce train–test mismatch</p><div class="delta" data-math="D_f(\pi_T\,\Vert\,\pi_S)\downarrow"></div></article>
           </div>
           <div class="opd-bottom">
             <p class="fragment fade-up"><strong>Like SFT:</strong> a teacher provides dense token-level information</p>
@@ -396,10 +396,10 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
           <p class="kicker">TAKEAWAY</p>
           <h2>The maze never disappeared.<br /><em>Its walls became language.</em></h2>
           <div class="takeaways">
-            <p class="fragment fade-up"><span>01</span>RL uses <strong>outcomes</strong> to change future behavior probabilities</p>
-            <p class="fragment fade-up"><span>02</span>A strong prior + reasoning actions make open tasks explorable</p>
-            <p class="fragment fade-up"><span>03</span>RLVR succeeds first where feedback is easy to verify</p>
-            <p class="fragment fade-up"><span>04</span>SFT, mid-training, and RL form <strong>one system</strong>, not a contest</p>
+            <p class="fragment fade-up"><span class="num">01</span><span class="takeaway-text">RL uses <strong>outcomes</strong> to change future behavior probabilities</span></p>
+            <p class="fragment fade-up"><span class="num">02</span><span class="takeaway-text">A strong prior + reasoning actions make open tasks explorable</span></p>
+            <p class="fragment fade-up"><span class="num">03</span><span class="takeaway-text">RLVR succeeds first where feedback is easy to verify</span></p>
+            <p class="fragment fade-up"><span class="num">04</span><span class="takeaway-text">SFT, mid-training, and RL form <strong>one system</strong>, not a contest</span></p>
           </div>
           <blockquote class="fragment fade-up">RL is an amplifier: it amplifies the prior — and the reward design.</blockquote>
           <aside class="notes">Return to the opening maze. The audience should leave with these four points. The final line emphasizes that RL amplifies both capability and mistakes in objective design.</aside>

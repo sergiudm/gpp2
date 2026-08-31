@@ -9,6 +9,7 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
+    "katex": "^0.18.4",
     "reveal.js": "^5.2.1"
   },
   "devDependencies": {
