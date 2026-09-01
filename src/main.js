@@ -33,11 +33,13 @@ const deck = new Reveal({
 const deckReady = deck.initialize();
 
 const counter = document.querySelector('#slide-count');
-const navigator = document.querySelector('#slide-navigator');
-const navigatorTrigger = document.querySelector('#slide-nav-trigger');
-const navigatorPanel = document.querySelector('#slide-nav-panel');
-const navigatorGrid = document.querySelector('#slide-nav-grid');
-const navigatorCount = document.querySelector('#slide-nav-count');
+const slideNavigator = document.querySelector('#slide-navigator');
+const slideRailList = document.querySelector('#slide-rail-list');
+const slidePeek = document.querySelector('#slide-peek');
+const slidePeekStage = document.querySelector('#slide-peek-stage');
+const slidePeekNumber = document.querySelector('#slide-peek-number');
+const slidePeekKicker = document.querySelector('#slide-peek-kicker');
+const slidePeekTitle = document.querySelector('#slide-peek-title');
 const themeToggle = document.querySelector('#theme-toggle');
 const themeToggleLabel = document.querySelector('#theme-toggle-label');
 const pad = (n) => String(n).padStart(2, '0');
@@ -69,100 +71,99 @@ function compactText(value) {
   return value?.replace(/\s+/g, ' ').trim() || '';
 }
 
-function getThumbnailTheme(section) {
-  if (section.classList.contains('quiz-slide')) return 'quiz';
-  if (section.classList.contains('grpo-slide')) return 'grpo';
-  if (section.classList.contains('hinge-slide')) return 'light';
-  if (section.classList.contains('post-assessment-slide')) return 'assessment';
-  if (section.classList.contains('takeaway-slide')) return 'summary';
-  if (section.classList.contains('sources-slide')) return 'sources';
-  return 'lesson';
+function getSlideLabel(section, index) {
+  const title = compactText(section.querySelector('h1, h2')?.textContent) || `Slide ${index + 1}`;
+  const kicker = compactText(section.querySelector('.kicker, .eyebrow')?.textContent).split('·')[0].trim() || 'LESSON';
+  return { title, kicker };
 }
 
 function buildSlideNavigator() {
   const slides = deck.getHorizontalSlides();
-  const items = slides.map((section, index) => {
-    const titleElement = section.querySelector('h1, h2');
-    const kickerElement = section.querySelector('.kicker, .eyebrow');
-    const title = compactText(titleElement?.textContent) || `Slide ${index + 1}`;
-    const kicker = compactText(kickerElement?.textContent).split('·')[0].trim() || 'LESSON';
-    const backgroundImage = section.dataset.backgroundImage;
-
+  return slides.map((section, index) => {
+    const { title } = getSlideLabel(section, index);
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `slide-thumb slide-thumb--${getThumbnailTheme(section)}`;
+    button.className = 'slide-rail-item';
+    if (index % 5 === 0) button.classList.add('is-major');
+    if (section.classList.contains('quiz-slide')) button.classList.add('is-quiz');
     button.dataset.slideIndex = index;
     button.setAttribute('aria-label', `Go to slide ${index + 1}: ${title}`);
     button.title = title;
-
-    const visual = document.createElement('span');
-    visual.className = 'slide-thumb-visual';
-    if (backgroundImage) {
-      const imageUrl = new URL(backgroundImage, document.baseURI).href;
-      visual.classList.add('has-image');
-      visual.style.backgroundImage = `linear-gradient(90deg, rgba(8,17,31,.94), rgba(8,17,31,.40)), url("${imageUrl}")`;
-    }
-
-    const number = document.createElement('span');
-    number.className = 'slide-thumb-number';
-    number.textContent = pad(index + 1);
-
-    const category = document.createElement('span');
-    category.className = 'slide-thumb-kicker';
-    category.textContent = kicker;
-
-    const previewTitle = document.createElement('span');
-    previewTitle.className = 'slide-thumb-title';
-    previewTitle.textContent = title;
-
-    const caption = document.createElement('span');
-    caption.className = 'slide-thumb-caption';
-    const captionNumber = document.createElement('b');
-    captionNumber.textContent = pad(index + 1);
-    const captionTitle = document.createElement('span');
-    captionTitle.textContent = title;
-    caption.append(captionNumber, captionTitle);
-
-    visual.append(number, category, previewTitle);
-    button.append(visual, caption);
+    button.addEventListener('pointerenter', () => showSlidePeek(index, button));
+    button.addEventListener('focus', () => showSlidePeek(index, button));
     button.addEventListener('click', () => {
       deck.slide(index);
-      navigator.dataset.pinned = 'false';
-      navigatorTrigger.focus({ preventScroll: true });
-      setNavigatorOpen(false);
+      hideSlidePeek();
+      button.blur();
     });
-
-    navigatorGrid.append(button);
+    slideRailList.append(button);
     return button;
   });
-
-  return items;
 }
 
 let navigatorItems = [];
-let navigatorOpen = false;
+let previewedSlide = null;
 
-function setNavigatorOpen(open) {
-  navigatorOpen = open;
-  navigator.classList.toggle('is-open', open);
-  navigatorTrigger.setAttribute('aria-expanded', String(open));
-  if (open) {
-    const { h } = deck.getIndices();
-    requestAnimationFrame(() => navigatorItems[h]?.scrollIntoView({ block: 'nearest' }));
+function makeSlidePreview(section) {
+  const clone = section.cloneNode(true);
+  clone.classList.remove('past', 'present', 'future');
+  clone.removeAttribute('style');
+  clone.setAttribute('aria-hidden', 'true');
+  clone.querySelectorAll('aside.notes').forEach((notes) => notes.remove());
+  clone.querySelectorAll('.fragment').forEach((fragment) => fragment.classList.add('visible'));
+  clone.querySelectorAll('a, button, input, select, textarea').forEach((element) => {
+    element.setAttribute('tabindex', '-1');
+  });
+
+  if (section.dataset.backgroundImage) {
+    clone.style.backgroundImage = `url("${new URL(section.dataset.backgroundImage, document.baseURI).href}")`;
+    clone.style.backgroundPosition = 'center';
+    clone.style.backgroundSize = 'cover';
   }
+  if (section.dataset.backgroundColor) clone.style.backgroundColor = section.dataset.backgroundColor;
+  return clone;
+}
+
+function showSlidePeek(index, anchor = navigatorItems[index]) {
+  const slides = deck.getHorizontalSlides();
+  const section = slides[index];
+  if (!section || !anchor) return;
+  const { title, kicker } = getSlideLabel(section, index);
+
+  previewedSlide = index;
+  slidePeekNumber.textContent = `${pad(index + 1)} / ${pad(slides.length)}`;
+  slidePeekKicker.textContent = kicker;
+  slidePeekTitle.textContent = title;
+  slidePeekStage.replaceChildren(makeSlidePreview(section));
+  slidePeek.classList.add('is-visible');
+  slidePeek.setAttribute('aria-hidden', 'false');
+
+  requestAnimationFrame(() => {
+    const anchorRect = anchor.getBoundingClientRect();
+    const peekHeight = slidePeek.getBoundingClientRect().height;
+    const preferredTop = anchorRect.top + anchorRect.height / 2 - peekHeight / 2;
+    const top = Math.max(16, Math.min(window.innerHeight - peekHeight - 16, preferredTop));
+    slidePeek.style.top = `${top}px`;
+  });
+}
+
+function hideSlidePeek() {
+  previewedSlide = null;
+  slidePeek.classList.remove('is-visible');
+  slidePeek.setAttribute('aria-hidden', 'true');
 }
 
 function updateNavigator() {
   const { h } = deck.getIndices();
-  const total = deck.getHorizontalSlides().length;
-  navigatorCount.textContent = `${pad(h + 1)} / ${pad(total)}`;
   navigatorItems.forEach((item, index) => {
     const current = index === h;
     item.classList.toggle('is-current', current);
     if (current) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');
   });
-  if (navigatorOpen) navigatorItems[h]?.scrollIntoView({ block: 'nearest' });
+  if (previewedSlide !== null && slideNavigator.matches(':hover')) {
+    showSlidePeek(previewedSlide, navigatorItems[previewedSlide]);
+  }
 }
 
 function updateCounter() {
@@ -284,73 +285,44 @@ deck.on('slidechanged', (event) => {
   if (event.currentSlide === mazeSlide) requestAnimationFrame(() => setMazeState(visibleMazeStep()));
 });
 
-navigator.dataset.pinned = 'false';
-navigator.addEventListener('pointerenter', () => setNavigatorOpen(true));
-navigator.addEventListener('pointerleave', () => {
-  if (navigator.dataset.pinned !== 'true') setNavigatorOpen(false);
-});
-navigator.addEventListener('focusin', () => setNavigatorOpen(true));
-navigator.addEventListener('focusout', () => {
+slideNavigator.addEventListener('pointerleave', hideSlidePeek);
+slideNavigator.addEventListener('focusout', () => {
   requestAnimationFrame(() => {
-    const retainsFocus = navigator.contains(document.activeElement);
-    const hovered = navigator.matches(':hover');
-    if (!retainsFocus && !hovered && navigator.dataset.pinned !== 'true') setNavigatorOpen(false);
+    if (!slideNavigator.contains(document.activeElement) && !slideNavigator.matches(':hover')) hideSlidePeek();
   });
 });
 
-navigatorTrigger.addEventListener('click', () => {
-  const pinned = navigator.dataset.pinned !== 'true';
-  navigator.dataset.pinned = String(pinned);
-  setNavigatorOpen(pinned || navigator.matches(':hover'));
-});
-
-navigatorTrigger.addEventListener('keydown', (event) => {
-  if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-    event.preventDefault();
-    setNavigatorOpen(true);
-    const { h } = deck.getIndices();
-    navigatorItems[h]?.focus();
-  }
-});
-
-navigatorPanel.addEventListener('keydown', (event) => {
-  const item = event.target.closest('.slide-thumb');
+slideRailList.addEventListener('keydown', (event) => {
+  const item = event.target.closest('.slide-rail-item');
   if (!item) return;
   const index = Number(item.dataset.slideIndex);
-  const columns = window.matchMedia('(max-width: 720px)').matches ? 2 : 4;
   const moves = {
     ArrowLeft: index - 1,
+    ArrowUp: index - 1,
     ArrowRight: index + 1,
-    ArrowUp: index - columns,
-    ArrowDown: index + columns,
+    ArrowDown: index + 1,
     Home: 0,
     End: navigatorItems.length - 1
   };
   if (!(event.key in moves)) return;
   event.preventDefault();
   event.stopPropagation();
-  navigatorItems[Math.max(0, Math.min(navigatorItems.length - 1, moves[event.key]))]?.focus();
-});
-
-document.addEventListener('pointerdown', (event) => {
-  if (!navigator.contains(event.target)) {
-    navigator.dataset.pinned = 'false';
-    setNavigatorOpen(false);
-  }
+  const nextItem = navigatorItems[Math.max(0, Math.min(navigatorItems.length - 1, moves[event.key]))];
+  nextItem?.focus({ preventScroll: true });
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && navigatorOpen) {
-    navigator.dataset.pinned = 'false';
-    setNavigatorOpen(false);
-    navigatorTrigger.focus({ preventScroll: true });
+  if (event.key === 'Escape' && previewedSlide !== null) {
+    hideSlidePeek();
+    document.activeElement?.blur?.();
+    event.stopPropagation();
     return;
   }
   if (event.key.toLowerCase() === 'm') {
-    const open = !navigatorOpen;
-    navigator.dataset.pinned = String(open);
-    setNavigatorOpen(open);
-    if (open) navigatorItems[deck.getIndices().h]?.focus();
+    event.preventDefault();
+    const currentItem = navigatorItems[deck.getIndices().h];
+    currentItem?.focus({ preventScroll: true });
+    showSlidePeek(deck.getIndices().h, currentItem);
     return;
   }
   if (event.key.toLowerCase() === 'f') {
