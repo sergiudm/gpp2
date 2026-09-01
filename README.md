@@ -7,6 +7,7 @@ An animated, widescreen HTML presentation for a 50-minute undergraduate lesson o
 - Use the left and right arrow keys to navigate.
 - Press `F` for full screen.
 - Press `S` for speaker view and notes.
+- Hover over `SLIDES` or press `M` to open the clickable slide map.
 - Press `Esc` for the slide overview.
 
 ## Develop

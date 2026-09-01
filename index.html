@@ -706,7 +706,30 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
         </section>
       </div>
     </div>
-    <div id="keyboard-hint" role="status">← → navigate · F full screen · S speaker view</div>
+    <nav id="slide-navigator" class="slide-navigator" aria-label="Slide navigator">
+      <button
+        id="slide-nav-trigger"
+        class="slide-nav-trigger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="slide-nav-panel"
+      >
+        <span class="slide-nav-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>SLIDES</span>
+        <span id="slide-nav-count" class="slide-nav-count">01 / 34</span>
+      </button>
+      <div id="slide-nav-panel" class="slide-nav-panel" role="region" aria-label="Slide thumbnails">
+        <div class="slide-nav-heading">
+          <div>
+            <strong>SLIDE MAP</strong>
+            <span>Jump to any part of the lesson</span>
+          </div>
+          <kbd>M</kbd>
+        </div>
+        <div id="slide-nav-grid" class="slide-nav-grid"></div>
+      </div>
+    </nav>
+    <div id="keyboard-hint" role="status">← → navigate · M slide map · F full screen · S speaker view</div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
