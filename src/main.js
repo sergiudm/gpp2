@@ -152,6 +152,113 @@ deckReady.then(() => {
 });
 deck.on('slidechanged', updateCounter);
 
+const mazeSlide = document.querySelector('.maze-slide');
+const maze = mazeSlide.querySelector('.maze');
+const mazeRunner = maze.querySelector('.maze-runner');
+const mazeRoutes = [...maze.querySelectorAll('[data-maze-route]')];
+const mazeAttempts = [...mazeSlide.querySelectorAll('[data-maze-step]')];
+const mazeDurations = [1350, 1750, 2600];
+let mazeAnimationFrame = null;
+
+function stopMazeAnimation() {
+  if (mazeAnimationFrame) cancelAnimationFrame(mazeAnimationFrame);
+  mazeAnimationFrame = null;
+}
+
+function mazeRouteLength(route) {
+  if (!route.dataset.routeLength) route.dataset.routeLength = String(route.getTotalLength());
+  return Number(route.dataset.routeLength);
+}
+
+function placeMazeRunner(route, distance) {
+  const point = route.getPointAtLength(distance);
+  mazeRunner.setAttribute('transform', `translate(${point.x} ${point.y})`);
+}
+
+function visibleMazeStep() {
+  return mazeAttempts.reduce((latest, attempt) => {
+    if (!attempt.classList.contains('visible')) return latest;
+    return Math.max(latest, Number(attempt.dataset.mazeStep));
+  }, 0);
+}
+
+function setMazeState(step, resolved = true) {
+  stopMazeAnimation();
+  maze.dataset.step = String(step);
+  if (resolved && step > 0) maze.dataset.resolvedStep = String(step);
+  else delete maze.dataset.resolvedStep;
+
+  mazeRoutes.forEach((route) => {
+    const routeStep = Number(route.dataset.mazeRoute);
+    const length = mazeRouteLength(route);
+    const completed = routeStep < step || (routeStep === step && resolved);
+    route.style.strokeDasharray = `${length}`;
+    route.style.strokeDashoffset = `${completed ? 0 : length}`;
+    route.classList.toggle('is-past', routeStep < step);
+    route.classList.toggle('is-active', routeStep === step);
+  });
+
+  mazeAttempts.forEach((attempt) => {
+    const attemptStep = Number(attempt.dataset.mazeStep);
+    attempt.classList.toggle('is-past', attemptStep < step);
+    attempt.classList.toggle('is-active', attemptStep === step);
+    attempt.classList.toggle('is-resolved', attemptStep < step || (attemptStep === step && resolved));
+  });
+
+  const route = step > 0 ? mazeRoutes[step - 1] : mazeRoutes[0];
+  placeMazeRunner(route, step > 0 && resolved ? mazeRouteLength(route) : 0);
+}
+
+function playMazeStep(step) {
+  setMazeState(step, false);
+  const route = mazeRoutes[step - 1];
+  const attempt = mazeAttempts[step - 1];
+  const length = mazeRouteLength(route);
+  const duration = mazeDurations[step - 1];
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    route.style.strokeDashoffset = '0';
+    placeMazeRunner(route, length);
+    maze.dataset.resolvedStep = String(step);
+    attempt.classList.add('is-resolved');
+    return;
+  }
+
+  const startedAt = performance.now();
+  function animateRoute(now) {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    const eased = progress < 0.5
+      ? 2 * progress * progress
+      : 1 - ((-2 * progress + 2) ** 2) / 2;
+    const distance = length * eased;
+    route.style.strokeDashoffset = `${length - distance}`;
+    placeMazeRunner(route, distance);
+
+    if (progress < 1) {
+      mazeAnimationFrame = requestAnimationFrame(animateRoute);
+      return;
+    }
+
+    mazeAnimationFrame = null;
+    maze.dataset.resolvedStep = String(step);
+    attempt.classList.add('is-resolved');
+  }
+  mazeAnimationFrame = requestAnimationFrame(animateRoute);
+}
+
+deckReady.then(() => setMazeState(visibleMazeStep()));
+deck.on('fragmentshown', (event) => {
+  const step = Number(event.fragment?.dataset.mazeStep);
+  if (step) playMazeStep(step);
+});
+deck.on('fragmenthidden', (event) => {
+  if (mazeSlide.contains(event.fragment)) setMazeState(visibleMazeStep());
+});
+deck.on('slidechanged', (event) => {
+  if (event.previousSlide === mazeSlide && event.currentSlide !== mazeSlide) stopMazeAnimation();
+  if (event.currentSlide === mazeSlide) requestAnimationFrame(() => setMazeState(visibleMazeStep()));
+});
+
 navigator.dataset.pinned = 'false';
 navigator.addEventListener('pointerenter', () => setNavigatorOpen(true));
 navigator.addEventListener('pointerleave', () => {

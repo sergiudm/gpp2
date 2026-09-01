@@ -157,27 +157,50 @@ Google DeepMind, AlphaStar. https://deepmind.google/blog/alphastar-grandmaster-l
         <section class="maze-slide">
           <header>
             <p class="kicker">CORE LESSON · 12:00 · THE LOOP</p>
-            <h2>Forget equations for a moment: get one dot out of a maze</h2>
+            <h2>One objective: <em>reach the goal by navigating around obstacles.</em></h2>
           </header>
           <div class="maze-stage">
-            <div class="maze" role="img" aria-label="Animation of a reinforcement learning agent exploring a maze">
+            <div class="maze" role="img" aria-label="An agent tries routes through a maze, avoids obstacles, and reaches a rewarded goal">
               <div class="maze-grid"></div>
-              <div class="goal">+1</div>
-              <div class="agent"><span></span></div>
+              <div class="maze-start-label">AGENT START</div>
+              <div class="goal"><small>GOAL</small><b>+1</b></div>
               <svg class="trail" viewBox="0 0 600 360" preserveAspectRatio="none" aria-hidden="true">
-                <path class="bad" d="M55,308 L55,248 L155,248 L155,128 L255,128 L255,68" />
-                <path class="bad bad-2" d="M55,308 L55,248 L155,248 L155,188 L355,188 L355,308" />
-                <path class="good" d="M55,308 L55,248 L155,248 L155,188 L255,188 L255,248 L455,248 L455,128 L555,128 L555,68" />
+                <defs>
+                  <pattern id="obstacle-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <rect width="10" height="10" fill="#14263c"></rect>
+                    <line x1="0" y1="0" x2="0" y2="10" stroke="#29435f" stroke-width="3"></line>
+                  </pattern>
+                </defs>
+                <g class="maze-obstacles">
+                  <rect x="110" y="245" width="240" height="24" rx="5"></rect>
+                  <rect x="380" y="135" width="24" height="166" rx="5"></rect>
+                  <rect x="250" y="105" width="180" height="24" rx="5"></rect>
+                </g>
+                <text class="obstacle-label" x="120" y="238">OBSTACLE</text>
+                <path class="maze-route route-direct" data-maze-route="1" d="M55,315 L55,300 L220,300 L220,270" />
+                <path class="maze-route route-explore" data-maze-route="2" d="M55,315 L55,300 L355,300 L355,178 L380,178" />
+                <path class="maze-route route-success" data-maze-route="3" d="M55,315 L55,300 L355,300 L355,325 L455,325 L455,80 L545,80 L545,55" />
+                <g class="collision-marker collision-one" transform="translate(220 270)"><path d="M-10,-10 L10,10 M10,-10 L-10,10"></path></g>
+                <g class="collision-marker collision-two" transform="translate(380 178)"><path d="M-10,-10 L10,10 M10,-10 L-10,10"></path></g>
+                <g class="maze-runner" transform="translate(55 315)">
+                  <circle class="maze-agent-pulse" r="17"></circle>
+                  <circle class="maze-agent-core" r="9"></circle>
+                </g>
               </svg>
             </div>
             <div class="maze-copy">
-              <div class="attempt fragment fade-up"><span>TRY 01</span><b>Hits a wall</b><i>−0.1</i></div>
-              <div class="attempt fragment fade-up"><span>TRY 17</span><b>Long detour</b><i>0</i></div>
-              <div class="attempt success fragment fade-up"><span>TRY 83</span><b>Reaches goal</b><i>+1</i></div>
-              <p class="fragment fade-up">No demonstration of the “right path.”<br /><strong>Only outcomes.</strong></p>
+              <div class="maze-objective">
+                <small>OBJECTIVE</small>
+                <b>Reach the green target</b>
+                <p>Avoid every obstacle → earn <strong>+1</strong></p>
+              </div>
+              <div class="attempt fragment fade-up" data-maze-step="1"><span>TRY 01</span><div><b>Direct route</b><small>Hits an obstacle</small></div><i>−0.1</i></div>
+              <div class="attempt fragment fade-up" data-maze-step="2"><span>TRY 17</span><div><b>Explores a detour</b><small>Finds another wall</small></div><i>0</i></div>
+              <div class="attempt success fragment fade-up" data-maze-step="3"><span>TRY 83</span><div><b>Moves around the walls</b><small>Goal reached</small></div><i>+1</i></div>
+              <p class="fragment fade-up">The goal defines success.<br /><strong>RL discovers the route.</strong></p>
             </div>
           </div>
-          <aside class="notes">The agent keeps trying paths. We never tell it what to do step by step; we only evaluate outcomes. Advance three times to reveal failure, exploration, and success.</aside>
+          <aside class="notes">First point to the objective card, the green goal, and the three solid obstacles. Then advance once per attempt. Each click now starts the matching route; the result and reward appear only when the agent stops. On Try 83, emphasize how the agent goes below the first wall, around the vertical wall, and up the right side to reach the goal. Advance once more for the conclusion: the environment defines success, but does not demonstrate the path.</aside>
         </section>
 
         <section class="loop-slide" data-auto-animate>
