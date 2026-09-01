@@ -38,7 +38,32 @@ const navigatorTrigger = document.querySelector('#slide-nav-trigger');
 const navigatorPanel = document.querySelector('#slide-nav-panel');
 const navigatorGrid = document.querySelector('#slide-nav-grid');
 const navigatorCount = document.querySelector('#slide-nav-count');
+const themeToggle = document.querySelector('#theme-toggle');
+const themeToggleLabel = document.querySelector('#theme-toggle-label');
 const pad = (n) => String(n).padStart(2, '0');
+
+function setTheme(theme, persist = true) {
+  const nextTheme = theme === 'light' ? 'light' : 'dark';
+  const isLight = nextTheme === 'light';
+  document.documentElement.dataset.theme = nextTheme;
+  themeToggle.setAttribute('aria-pressed', String(isLight));
+  themeToggle.setAttribute('aria-label', `Switch to ${isLight ? 'night' : 'day'} mode`);
+  themeToggle.title = `Switch to ${isLight ? 'night' : 'day'} mode`;
+  themeToggleLabel.textContent = isLight ? 'DAY' : 'NIGHT';
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isLight ? '#f3efe6' : '#08111f');
+  if (persist) {
+    try {
+      localStorage.setItem('rl-deck-theme', nextTheme);
+    } catch {
+      // The theme still works when storage is unavailable.
+    }
+  }
+}
+
+setTheme(document.documentElement.dataset.theme, false);
+themeToggle.addEventListener('click', () => {
+  setTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+});
 
 function compactText(value) {
   return value?.replace(/\s+/g, ' ').trim() || '';
@@ -348,10 +373,14 @@ function resize() {
 function draw() {
   const w = canvas.width, h = canvas.height;
   ctx.clearRect(0, 0, w, h);
+  const isLight = document.documentElement.dataset.theme === 'light';
   for (const n of nodes) {
     n.x = (n.x + n.vx + 1) % 1; n.y = (n.y + n.vy + 1) % 1;
     ctx.beginPath(); ctx.arc(n.x * w, n.y * h, n.r * devicePixelRatio, 0, Math.PI * 2);
-    ctx.fillStyle = n.coral ? 'rgba(255,111,89,.18)' : 'rgba(91,232,209,.13)'; ctx.fill();
+    ctx.fillStyle = n.coral
+      ? (isLight ? 'rgba(185,69,49,.13)' : 'rgba(255,111,89,.18)')
+      : (isLight ? 'rgba(12,111,99,.10)' : 'rgba(91,232,209,.13)');
+    ctx.fill();
   }
   requestAnimationFrame(draw);
 }

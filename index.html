@@ -9,6 +9,13 @@
     <meta property="og:description" content="From Mazes to Reasoning: reinforcement learning in the LLM era" />
     <meta property="og:image" content="./assets/rl-maze-hero.png" />
     <title>Can RL Finally Generalize?</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('rl-deck-theme') || 'dark';
+      } catch {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
   </head>
   <body>
     <canvas id="ambient" aria-hidden="true"></canvas>
@@ -752,6 +759,10 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
         <div id="slide-nav-grid" class="slide-nav-grid"></div>
       </div>
     </nav>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to day mode">
+      <span class="theme-toggle-icon" aria-hidden="true"><i class="theme-sun">☀</i><i class="theme-moon">☾</i><b></b></span>
+      <span id="theme-toggle-label">NIGHT</span>
+    </button>
     <div id="keyboard-hint" role="status">← → navigate · M slide map · F full screen · S speaker view</div>
     <script type="module" src="/src/main.js"></script>
   </body>
