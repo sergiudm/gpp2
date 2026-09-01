@@ -77,7 +77,7 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .orbit-node.visible { transform: translate(-50%,-50%) !important; }
 .orbit-node small { display: block; color: var(--mint); font: 700 12px ui-monospace, monospace; letter-spacing: .12em; }
 .orbit-node b { display: block; margin-top: 10px; font-size: 22px; font-weight: 640; }
-.orbit-node > span { position: absolute; right: 14px; top: 11px; color: rgba(244,240,231,.68); font: 500 16px Georgia, serif; }
+.orbit-node > span { position: absolute; right: 16px; top: 9px; color: var(--paper); font: 600 25px/1 Georgia, serif; text-shadow: 0 2px 14px rgba(0,0,0,.38); }
 .policy-core { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 205px; height: 205px; border-radius: 50%; background: radial-gradient(circle, rgba(103,234,212,.22), rgba(13,27,46,.96) 64%); border: 1px solid rgba(103,234,212,.42); box-shadow: 0 0 70px rgba(103,234,212,.12); }
 .policy-core > span { font: 700 12px ui-monospace, monospace; letter-spacing: .16em; color: var(--muted); }
 .policy-core strong { font: 500 68px Georgia, serif; color: var(--paper); line-height: 1; }
@@ -153,7 +153,8 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .prompt-stream .answer-token { background: rgba(103,234,212,.14); color: var(--mint); }
 .prompt-stream .verdict { width: 100%; margin-top: 44px; border-color: rgba(103,234,212,.35); color: var(--mint); text-align: center; }
 .mapping-labels article { padding: 18px 0; border-bottom: 1px solid rgba(244,240,231,.12); }
-.mapping-labels small { display: block; color: var(--coral); font: 700 12px ui-monospace, monospace; letter-spacing: .08em; }
+.mapping-labels small { display: block; color: var(--coral); font: 700 14px ui-monospace, monospace; letter-spacing: .08em; }
+.mapping-labels small [data-math] { margin-left: 4px; color: var(--paper); font-size: 1.43em; }
 .mapping-labels b { display: block; margin-top: 10px; font-size: 20px; font-weight: 540; line-height: 1.35; }
 
 /* language prior */
@@ -206,7 +207,7 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .runway-base b { display: block; margin-top: 13px; font-size: 23px; }.runway-base span { display: block; margin-top: 15px; color: var(--muted); font-size: 16px; }
 .takeoff { position: absolute; inset: 0; }
 .takeoff svg { position: absolute; right: 2%; bottom: 28px; width: 64%; height: 300px; overflow: visible; }.takeoff path { fill: none; stroke: var(--mint); stroke-width: 3; stroke-dasharray: 15 12; filter: drop-shadow(0 0 8px rgba(103,234,212,.32)); }
-.plane { position: absolute; right: 12%; top: 52px; display: grid; place-items: center; width: 90px; height: 90px; border-radius: 50%; background: rgba(103,234,212,.16); border: 1px solid rgba(103,234,212,.38); color: var(--mint); font: 500 30px Georgia, serif; animation: float 3s ease-in-out infinite; }
+.plane { position: absolute; right: 12%; top: 52px; display: grid; place-items: center; width: 90px; height: 90px; border-radius: 50%; background: rgba(103,234,212,.16); border: 1px solid rgba(103,234,212,.38); color: var(--mint); font: 500 36px Georgia, serif; animation: float 3s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(-9px) rotate(-2deg); } }
 .takeoff small { position: absolute; right: 36%; top: 174px; color: var(--mint); }.takeoff b { position: absolute; right: 16%; top: 206px; font-size: 22px; }
 .exception-note { display: grid; grid-template-columns: 210px 1fr; gap: 28px; align-items: baseline; margin: 18px auto 0; max-width: 1240px; padding-top: 23px; border-top: 1px solid rgba(244,240,231,.12); }
@@ -251,7 +252,8 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .opd-loop article { min-height: 305px; padding: 25px; border-top: 2px solid rgba(244,240,231,.22); background: linear-gradient(180deg, rgba(244,240,231,.045), transparent); }
 .opd-loop article.teacher { border-top-color: var(--coral); }.opd-loop article.update { border-top-color: var(--mint); }
 .opd-loop small { color: var(--muted); font: 700 11px ui-monospace, monospace; letter-spacing: .11em; }
-.opd-loop b { display: block; margin-top: 18px; font-size: 25px; }.opd-loop p { margin-top: 10px; min-height: 48px; color: var(--muted); font-size: 15px; line-height: 1.4; }
+.opd-loop b { display: block; margin-top: 18px; font-size: 25px; }.opd-loop p { margin-top: 10px; min-height: 48px; color: var(--muted); font-size: 16px; line-height: 1.4; }
+.opd-loop p [data-math] { color: var(--paper); font-size: 1.25em; }
 .opd-arrow { align-self: center; text-align: center; color: rgba(244,240,231,.32); font-size: 30px; }
 .bubble { position: relative; margin-top: 26px; padding: 18px; border: 1px solid rgba(111,156,255,.26); background: rgba(111,156,255,.07); color: #cdd9ff; font: 500 14px/1.5 ui-monospace, monospace; }
 .teacher-bubble { border-color: rgba(255,118,95,.3); background: rgba(255,118,95,.07); color: #ffc0b5; }
