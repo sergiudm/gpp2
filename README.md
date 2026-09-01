@@ -1,6 +1,6 @@
 # Can RL Finally Generalize?
 
-An animated, widescreen HTML presentation introducing reinforcement learning from maze navigation to RL for large language models.
+An animated, widescreen HTML presentation for a 50-minute undergraduate lesson on reinforcement learning, from AlphaGo and maze navigation to GRPO and RL for large language models. The 34-slide deck includes prerequisite review, eight formative quiz slides, a post-assessment, speaker notes, and source links.
 
 ## Present
 

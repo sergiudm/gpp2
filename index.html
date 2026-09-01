@@ -13,7 +13,7 @@
   <body>
     <canvas id="ambient" aria-hidden="true"></canvas>
     <div id="deck-hud" aria-hidden="true">
-      <span>RL × LLM</span><span id="slide-count">01 / 18</span>
+      <span>RL × LLM</span><span id="slide-count">01 / 34</span>
     </div>
     <div class="reveal">
       <div class="slides">
@@ -25,12 +25,138 @@
             <p class="byline">Manqi Luo · Qijun Han</p>
           </div>
           <div class="scroll-cue">Press → to begin <span>→</span></div>
-          <aside class="notes">Opening question: if an AI receives only a reward at the finish line, can it learn how to think? We begin with the classic maze.</aside>
+          <aside class="notes">Opening question: if an AI receives only a win or loss, can it discover a strategy that humans never demonstrated? Let AlphaGo and AlphaStar supply the surprise before we reduce the idea to a maze.</aside>
+        </section>
+
+        <!-- bridge in
+         Alpha Go and previous traditional ML comparison
+        -->
+        <!-- quiz for pre assessment -->
+
+        <!--outcome
+        1. Compare supervised fine-tuning (SFT) and reinforcement learning (RL) and explain the main difference between learning from examples and learning from outcomes.
+        2. Explain the basic reinforcement learning process using the concepts of actions, rewards, and outcomes.
+        3. Identify the advantages and limitations of reinforcement learning on LLMs.
+        -->
+
+        <!--content
+        0. RL basics
+        1. comparison between SFT and RL
+        2. GRPO
+        3. Advantages and
+        -->
+
+        <section class="power-slide alphago-slide" data-background-image="./assets/alphago-bridge.png" data-background-opacity="0.96">
+          <div class="power-shade"></div>
+          <div class="power-copy">
+            <p class="kicker">BRIDGE-IN · 00:00–02:30</p>
+            <h2>AlphaGo did not just imitate great moves.<br /><em>It discovered new ones.</em></h2>
+            <p>Self-play turned winning and losing into a learning signal — until a machine defeated one of the strongest Go players in history.</p>
+          </div>
+          <div class="power-stats">
+            <article class="fragment fade-up"><b>4–1</b><span>vs. Lee Sedol</span></article>
+            <article class="fragment fade-up"><b>200M+</b><span>people watched</span></article>
+            <article class="fragment fade-up"><b>Move 37</b><span>about 1 in 10,000</span></article>
+          </div>
+          <p class="slide-cite"><a href="https://deepmind.google/research/alphago/">Google DeepMind · AlphaGo</a></p>
+          <aside class="notes">Timing: 2 minutes. Ask students whether a machine can be creative if it only receives win/loss feedback. AlphaGo beat Lee Sedol 4–1 in 2016; more than 200 million people watched. Its famous Move 37 was estimated to have only a 1-in-10,000 chance of being played by a human.
+
+[Source]
+Google DeepMind, AlphaGo. https://deepmind.google/research/alphago/</aside>
+        </section>
+
+        <section class="power-slide alphastar-slide" data-background-image="./assets/alphastar-bridge.png" data-background-opacity="0.98">
+          <div class="power-shade"></div>
+          <div class="power-copy">
+            <p class="kicker">BRIDGE-IN · 02:30–05:00</p>
+            <h2>AlphaStar learned inside a world with <em>imperfect information and millions of choices.</em></h2>
+            <p>A league of agents trained through imitation, self-play, and multi-agent RL — then competed under human-like constraints.</p>
+          </div>
+          <div class="power-stats">
+            <article class="fragment fade-up"><b>99.8%</b><span>of active players surpassed</span></article>
+            <article class="fragment fade-up"><b>3 races</b><span>Grandmaster with each</span></article>
+            <article class="fragment fade-up"><b>Real time</b><span>partial information</span></article>
+          </div>
+          <p class="slide-cite"><a href="https://deepmind.google/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/">Google DeepMind · AlphaStar</a></p>
+          <aside class="notes">Timing: 2.5 minutes. Contrast Go's clean turn-taking with StarCraft II: real time, partial information, long horizons, and many possible actions. AlphaStar ranked above 99.8% of active Battle.net players and reached Grandmaster with Protoss, Terran, and Zerg.
+
+[Source]
+Google DeepMind, AlphaStar. https://deepmind.google/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/</aside>
+        </section>
+
+        <section class="outcomes-slide">
+          <header>
+            <p class="kicker">LEARNING OUTCOMES · 05:00–07:00</p>
+            <h2>By the end of this class, you can explain the loop — and judge when to use it.</h2>
+          </header>
+          <div class="outcomes-grid">
+            <article class="fragment fade-up"><span>01</span><b>Map a task to RL</b><p>Identify the state, action, policy, and reward.</p></article>
+            <article class="fragment fade-up"><span>02</span><b>Explain GRPO</b><p>Describe how group-relative rewards update an LLM without a separate critic.</p></article>
+            <article class="fragment fade-up"><span>03</span><b>Choose the training signal</b><p>Compare SFT and RL, including RL's advantages and failure modes.</p></article>
+          </div>
+          <p class="outcome-route"><span>MAZE</span> → <span>LLM</span> → <span>GRPO</span> → <span>RLVR</span> → <span>TRADE-OFFS</span></p>
+          <aside class="notes">Timing: 2 minutes. Read the outcomes briefly and use the route at the bottom as the mental map for the session.</aside>
+        </section>
+
+        <section class="prereq-slide">
+          <header>
+            <p class="kicker">PREREQUISITES · 07:00–08:00</p>
+            <h2>You need a small probability toolkit — <em>not a full RL course.</em></h2>
+          </header>
+          <div class="prereq-grid">
+            <article class="need">
+              <small>WE WILL USE</small>
+              <p class="fragment fade-up"><b>Probability distributions</b><span>Non-negative values that sum to 1</span></p>
+              <p class="fragment fade-up"><b>Expected value</b><span>A probability-weighted average</span></p>
+              <p class="fragment fade-up"><b>Supervised learning</b><span>Predictions, labels, loss, gradient updates</span></p>
+            </article>
+            <article class="skip">
+              <small>WE WILL NOT REQUIRE</small>
+              <p class="fragment fade-up"><b>No Bellman equations</b><span>We focus on policy intuition</span></p>
+              <p class="fragment fade-up"><b>No proof-heavy optimization</b><span>Gradients stay qualitative</span></p>
+              <p class="fragment fade-up"><b>No prior RL experience</b><span>The maze builds the vocabulary</span></p>
+            </article>
+          </div>
+          <aside class="notes">Timing: 1 minute. Reassure students that the next three questions are a warm-up, not a graded test.</aside>
+        </section>
+
+        <section class="quiz-slide pre-quiz">
+          <p class="kicker">PRE-ASSESSMENT · 08:00–09:20</p>
+          <div class="quiz-number">01</div>
+          <h2>A policy chooses A with probability 0.75 and B with probability 0.25.</h2>
+          <p class="quiz-prompt">If reward(A) = +1 and reward(B) = −1, what is the expected reward?</p>
+          <div class="quiz-options four">
+            <article><span>A</span><b>−0.50</b></article><article><span>B</span><b>0</b></article><article><span>C</span><b>+0.50</b></article><article><span>D</span><b>+1.00</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · C</small><b data-math="0.75(1)+0.25(-1)=0.50"></b><p>Expected value weights each outcome by its probability.</p></div>
+          <aside class="notes">Timing: 80 seconds. Ask for a show of hands, then reveal C. This refreshes expected value before cumulative reward and policy optimization.</aside>
+        </section>
+
+        <section class="quiz-slide pre-quiz">
+          <p class="kicker">PRE-ASSESSMENT · 09:20–10:40</p>
+          <div class="quiz-number">02</div>
+          <h2>Which vector could be a probability distribution over three actions?</h2>
+          <div class="quiz-options four compact">
+            <article><span>A</span><b>[0.6, 0.3, 0.1]</b></article><article><span>B</span><b>[0.8, 0.4, −0.2]</b></article><article><span>C</span><b>[2, 1, 1]</b></article><article><span>D</span><b>[0.2, 0.2, 0.2]</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · A</small><b>All entries are non-negative, and they sum to 1.</b><p>An LLM policy is exactly this idea over a very large action space.</p></div>
+          <aside class="notes">Timing: 80 seconds. Reveal A. Connect the vector to an LLM's next-token probabilities.</aside>
+        </section>
+
+        <section class="quiz-slide pre-quiz">
+          <p class="kicker">PRE-ASSESSMENT · 10:40–12:00</p>
+          <div class="quiz-number">03</div>
+          <h2>In supervised learning, what directly tells the model how its prediction was wrong?</h2>
+          <div class="quiz-options four">
+            <article><span>A</span><b>A reward from the environment</b></article><article><span>B</span><b>A loss against a known target</b></article><article><span>C</span><b>Random exploration</b></article><article><span>D</span><b>A larger action space</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · B</small><b>Prediction + target → loss → gradient update</b><p>Later, this will make the contrast between SFT and RL precise.</p></div>
+          <aside class="notes">Timing: 80 seconds. Reveal B. Ask students to keep the phrase “known target” in mind; RL will replace it with an outcome signal.</aside>
         </section>
 
         <section class="maze-slide">
           <header>
-            <p class="kicker">01 · THE LOOP</p>
+            <p class="kicker">CORE LESSON · 12:00 · THE LOOP</p>
             <h2>Forget equations for a moment: get one dot out of a maze</h2>
           </header>
           <div class="maze-stage">
@@ -78,10 +204,21 @@
 Sutton & Barto, Reinforcement Learning: An Introduction, 2nd ed. http://incompleteideas.net/book/the-book-2nd.html</aside>
         </section>
 
+        <section class="quiz-slide concept-quiz">
+          <p class="kicker">QUICK CHECK · 15:00</p>
+          <div class="quiz-number">04</div>
+          <h2>The maze agent reaches the goal and receives +1. Which RL element is “+1”?</h2>
+          <div class="quiz-options four">
+            <article><span>A</span><b>State</b></article><article><span>B</span><b>Action</b></article><article><span>C</span><b>Policy</b></article><article><span>D</span><b>Reward</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · D</small><b>The reward evaluates the outcome.</b><p>The policy is the behavior that becomes more likely after the update.</p></div>
+          <aside class="notes">Timing: 45 seconds. Students answer together. Use the reveal to distinguish reward from policy.</aside>
+        </section>
+
         <section class="history-slide" data-background-image="./assets/rl-history-triptych.png" data-background-opacity="0.40">
           <div class="history-shade"></div>
           <header>
-            <p class="kicker">SPECIALISTS</p>
+            <p class="kicker">SPECIALISTS · 15:30</p>
             <h2>Old-school RL was astonishingly strong — inside one world</h2>
           </header>
           <div class="history-line">
@@ -102,7 +239,7 @@ Jumper et al., Highly accurate protein structure prediction with AlphaFold. http
 
         <section class="transfer-slide">
           <header>
-            <p class="kicker">THE TRANSFER GAP</p>
+            <p class="kicker">THE TRANSFER GAP · 16:30</p>
             <h2>Change the world, and the skill often <em>does not transfer</em></h2>
           </header>
           <div class="world-transfer">
@@ -129,8 +266,19 @@ Jumper et al., Highly accurate protein structure prediction with AlphaFold. http
           <aside class="notes">This is not a claim that algorithms can never cross tasks. The action space, environment, reward, and initial knowledge were usually designed around one world. Specialized RL resembles a world champion in exactly one sport.</aside>
         </section>
 
+        <section class="quiz-slide concept-quiz">
+          <p class="kicker">THINK–PAIR–SHARE · 18:00</p>
+          <div class="quiz-number">05</div>
+          <h2>Suppose we rename every Go-board coordinate. Can AlphaGo immediately use the old policy?</h2>
+          <div class="quiz-options two">
+            <article><span>A</span><b>Yes — intelligence is general</b></article><article><span>B</span><b>No — the state/action mapping changed</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · B</small><b>A policy is tied to how its world is represented.</b><p>Change the action space, environment, or reward, and transfer is no longer automatic.</p></div>
+          <aside class="notes">Timing: 1 minute. Give pairs 20 seconds. The point is not that transfer is impossible, but that the learned policy and representation are specialized.</aside>
+        </section>
+
         <section class="hinge-slide" data-background-color="#f2eee4">
-          <p class="kicker dark">THE HINGE</p>
+          <p class="kicker dark">THE HINGE · 19:00</p>
           <div class="hinge-copy">
             <h2>Maybe the missing piece<br />was not a smarter RL algorithm.</h2>
             <div class="hinge-word fragment fade-up">PRIOR<span>the starting bias</span></div>
@@ -144,7 +292,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="pipeline-slide">
           <header>
-            <p class="kicker">ONE TRAINING SYSTEM</p>
+            <p class="kicker">ONE TRAINING SYSTEM · 20:00</p>
             <h2>RL is not SFT's opponent. It is one stage in a training system.</h2>
           </header>
           <div class="pipeline" aria-label="High-level stages of large language model training">
@@ -169,7 +317,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="mapping-slide">
           <header>
-            <p class="kicker">RL, RE-MAPPED</p>
+            <p class="kicker">RL, RE-MAPPED · 21:00</p>
             <h2>Put an LLM back in the maze: every RL element is still there</h2>
           </header>
           <div class="mapping-stage">
@@ -193,9 +341,85 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
           <aside class="notes">The state is not only the prompt; it includes what the model has already produced and any tool results. An action may be one token, one reasoning span, or an entire response trajectory. The key intuition is that reasoning enters the action space.</aside>
         </section>
 
+        <section class="grpo-slide grpo-sample">
+          <header>
+            <p class="kicker">GRPO · STEP 1 · 22:00</p>
+            <h2>Ask one question. Sample a <em>group</em> of possible trajectories.</h2>
+          </header>
+          <div class="grpo-stage">
+            <div class="grpo-prompt"><small>PROMPT</small><b>Solve <span data-math="12x-7=29"></span></b><p>The current policy generates four independent completions.</p></div>
+            <div class="grpo-group">
+              <article class="fragment fade-up good"><small>o₁</small><p>12x = 36<br /><b>x = 3</b></p><span>reward 1</span></article>
+              <article class="fragment fade-up"><small>o₂</small><p>12x = 22<br /><b>x = 1.83</b></p><span>reward 0</span></article>
+              <article class="fragment fade-up"><small>o₃</small><p>12x = 24<br /><b>x = 2</b></p><span>reward 0</span></article>
+              <article class="fragment fade-up"><small>o₄</small><p>I cannot solve it.</p><span>reward 0</span></article>
+            </div>
+          </div>
+          <p class="grpo-caption fragment fade-up"><strong>Same prompt, same model, different sampled actions.</strong> The verifier scores outcomes; it does not provide a target answer to copy.</p>
+          <p class="slide-cite"><a href="https://arxiv.org/abs/2402.03300">Shao et al. · DeepSeekMath · 2024</a></p>
+          <aside class="notes">Timing: 1.5 minutes. GRPO begins by sampling a group of outputs from the current policy for the same prompt. The group provides a local comparison set. The example uses a binary verifier for clarity.
+
+[Source]
+Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
+        </section>
+
+        <section class="grpo-slide grpo-relative">
+          <header>
+            <p class="kicker">GRPO · STEP 2 · 23:30</p>
+            <h2>Convert rewards into <em>relative advantage</em>.</h2>
+          </header>
+          <div class="advantage-layout">
+            <div class="advantage-formula">
+              <small>GROUP-NORMALIZED ADVANTAGE</small>
+              <div data-math="A_i=\frac{r_i-\operatorname{mean}(r)}{\operatorname{std}(r)+\epsilon}"></div>
+              <p>Better than this group's average → positive<br />Worse than this group's average → negative</p>
+            </div>
+            <div class="advantage-bars" aria-label="Relative advantage for four samples">
+              <article class="fragment fade-up positive"><span>o₁</span><i style="--v:92%"></i><b>positive</b></article>
+              <article class="fragment fade-up negative"><span>o₂</span><i style="--v:31%"></i><b>negative</b></article>
+              <article class="fragment fade-up negative"><span>o₃</span><i style="--v:31%"></i><b>negative</b></article>
+              <article class="fragment fade-up negative"><span>o₄</span><i style="--v:31%"></i><b>negative</b></article>
+            </div>
+          </div>
+          <div class="critic-callout fragment fade-up"><small>PPO</small><span>learns a separate value model</span><strong>GRPO</strong><span>uses the group as the baseline</span><b>less memory</b></div>
+          <aside class="notes">Timing: 1.5 minutes. “Advantage” means better or worse than a baseline. PPO typically estimates that baseline with a learned critic/value model. GRPO replaces it with statistics from the sampled group, reducing memory use. Exact implementations may normalize rewards in slightly different ways.
+
+[Source]
+Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
+        </section>
+
+        <section class="grpo-slide grpo-update">
+          <header>
+            <p class="kicker">GRPO · STEP 3 · 25:00</p>
+            <h2>Increase good trajectories — but <em>do not let one batch move the policy too far.</em></h2>
+          </header>
+          <div class="update-equation" data-math="\max_\theta\;\mathbb{E}\!\left[\min\!\left(\rho_i A_i,\operatorname{clip}(\rho_i,1-\varepsilon,1+\varepsilon)A_i\right)-\beta D_{KL}\right]"></div>
+          <div class="guardrails">
+            <article class="fragment fade-up"><small>01 · DIRECTION</small><b data-math="A_i>0\Rightarrow\pi_\theta(o_i\mid q)\uparrow"></b><p>Positive advantage makes a trajectory more likely.</p></article>
+            <article class="fragment fade-up"><small>02 · CLIPPING</small><b data-math="\operatorname{clip}(\rho_i,1-\varepsilon,1+\varepsilon)"></b><p>Limit how much the probability ratio can matter.</p></article>
+            <article class="fragment fade-up"><small>03 · KL PENALTY</small><b data-math="D_{KL}(\pi_\theta\Vert\pi_{ref})"></b><p>Discourage drifting too far from a reference policy.</p></article>
+          </div>
+          <p class="grpo-caption fragment fade-up"><strong>The undergraduate version:</strong> compare within a group, nudge probabilities, keep the update stable.</p>
+          <aside class="notes">Timing: 2 minutes. Do not derive the objective. Point to three ideas: advantage gives direction, clipping limits the update, and a KL penalty discourages extreme drift. In full GRPO, the objective is evaluated at the token level across sampled completions.
+
+[Source]
+Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
+        </section>
+
+        <section class="quiz-slide grpo-quiz">
+          <p class="kicker">QUICK CHECK · 27:00</p>
+          <div class="quiz-number">06</div>
+          <h2>A GRPO group receives rewards [1, 1, 1, 1]. What useful comparison is available?</h2>
+          <div class="quiz-options three">
+            <article><span>A</span><b>The first sample is best</b></article><article><span>B</span><b>All advantages are approximately zero</b></article><article><span>C</span><b>The critic chooses a winner</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · B</small><b>No reward variation → no relative learning signal.</b><p>GRPO needs a group containing meaningfully different outcomes.</p></div>
+          <aside class="notes">Timing: 1 minute. Reveal B. Connect this to exploration: if every sampled completion fails, strengthen the prior or improve the reward/task curriculum.</aside>
+        </section>
+
         <section class="prior-slide">
           <header>
-            <p class="kicker">WHY NOW?</p>
+            <p class="kicker">WHY NOW? · 27:30</p>
             <h2>An infinite action space should be a disaster. <em>A strong prior makes it an opportunity.</em></h2>
           </header>
           <div class="prior-field">
@@ -220,7 +444,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="rlvr-slide">
           <header>
-            <p class="kicker">RL WITH VERIFIABLE REWARDS</p>
+            <p class="kicker">RL WITH VERIFIABLE REWARDS · 28:30</p>
             <h2>RLVR works first in math and code because correctness is cheap to check</h2>
           </header>
           <div class="verifier-equation">
@@ -244,7 +468,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="code-slide">
           <header>
-            <p class="kicker">ONE PROMPT · MANY TRAJECTORIES</p>
+            <p class="kicker">ONE PROMPT · MANY TRAJECTORIES · 29:30</p>
             <h2>A demonstration gives one path. A verifier can compare many.</h2>
           </header>
           <div class="code-arena">
@@ -259,9 +483,20 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
           <aside class="notes">SFT often gives the model one reference response. RLVR can sample several responses from the current model, run tests, and make successful trajectories more likely. This reward sees the outcome, so it may miss style, safety, or maintainability.</aside>
         </section>
 
+        <section class="quiz-slide concept-quiz">
+          <p class="kicker">QUICK CHECK · 31:00</p>
+          <div class="quiz-number">07</div>
+          <h2>The code passes every visible unit test, but it is insecure and unreadable. What did RL optimize?</h2>
+          <div class="quiz-options three">
+            <article><span>A</span><b>The true human goal</b></article><article><span>B</span><b>The verifier's measured proxy</b></article><article><span>C</span><b>Every desirable property</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · B</small><b>RL is loyal to the reward it receives.</b><p>Passing tests can be useful and still omit security, style, or maintainability.</p></div>
+          <aside class="notes">Timing: 1 minute. This check transitions from RLVR's advantage to reward design and reward hacking.</aside>
+        </section>
+
         <section class="sft-rl-slide">
           <header>
-            <p class="kicker">COOPERATION, NOT OPPOSITION</p>
+            <p class="kicker">COOPERATION, NOT OPPOSITION · 32:00</p>
             <h2>SFT builds the runway. RL explores beyond it.</h2>
           </header>
           <div class="runway">
@@ -288,7 +523,7 @@ Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161</asi
 
         <section class="initialization-slide">
           <header>
-            <p class="kicker">INITIALIZATION SHAPES THE CEILING</p>
+            <p class="kicker">INITIALIZATION SHAPES THE CEILING · 33:00</p>
             <h2>RL efficiency is shaped before RL even begins</h2>
           </header>
           <div class="init-spectrum">
@@ -317,9 +552,20 @@ Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161
 PRISM: Demystifying Retention and Interaction in Mid-Training. https://arxiv.org/abs/2603.17074</aside>
         </section>
 
+        <section class="quiz-slide concept-quiz">
+          <p class="kicker">THINK–PAIR–SHARE · 35:00</p>
+          <div class="quiz-number">08</div>
+          <h2>Your model samples 64 solutions and every verifier reward is zero. What is the best first intervention?</h2>
+          <div class="quiz-options three">
+            <article><span>A</span><b>Make the RL update larger</b></article><article><span>B</span><b>Strengthen the prior with mid-training or SFT</b></article><article><span>C</span><b>Delete the verifier</b></article>
+          </div>
+          <div class="quiz-answer fragment fade-up"><small>ANSWER · B</small><b>Learning cannot amplify success that is never sampled.</b><p>Earlier training stages can move useful behavior into the policy's reachable region.</p></div>
+          <aside class="notes">Timing: 1 minute. Give pairs 20 seconds. Reveal B, then use the SFT-versus-RL comparison as a review of why the stages cooperate.</aside>
+        </section>
+
         <section class="compare-slide">
           <header>
-            <p class="kicker">REVIEW BY COMPARISON</p>
+            <p class="kicker">REVIEW BY COMPARISON · 36:00</p>
             <h2>SFT learns from demonstrations. RL learns from outcomes.</h2>
           </header>
           <div class="compare-table" role="table" aria-label="Comparison of SFT and reinforcement learning">
@@ -341,7 +587,7 @@ Ren et al., Rethinking Generalization in Reasoning SFT. https://arxiv.org/abs/26
 
         <section class="limits-slide">
           <header>
-            <p class="kicker">THE BILL COMES DUE</p>
+            <p class="kicker">THE BILL COMES DUE · 38:00</p>
             <h2>RL is loyal to its objective — <em>even when the objective is wrong</em></h2>
           </header>
           <div class="limits-layout">
@@ -367,7 +613,7 @@ Yu et al., DAPO. https://arxiv.org/abs/2503.14476</aside>
 
         <section class="opd-slide">
           <header>
-            <p class="kicker">FUTURE · ON-POLICY DISTILLATION</p>
+            <p class="kicker">FUTURE · ON-POLICY DISTILLATION · 40:00</p>
             <h2>OPD lets the teacher correct mistakes the student actually makes</h2>
           </header>
           <div class="opd-loop">
@@ -391,18 +637,45 @@ Agarwal et al., On-Policy Distillation of Language Models. https://arxiv.org/abs
 Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
         </section>
 
+        <section class="post-assessment-slide">
+          <header>
+            <p class="kicker">POST-ASSESSMENT · 42:00–45:00</p>
+            <h2>Three sentences. Can you complete the lesson?</h2>
+          </header>
+          <div class="post-grid">
+            <article>
+              <small>01 · RL LOOP</small>
+              <p>Reward changes behavior by…</p>
+              <b class="fragment fade-up">changing the probability of future actions.</b>
+            </article>
+            <article>
+              <small>02 · GRPO</small>
+              <p>GRPO avoids a separate critic by…</p>
+              <b class="fragment fade-up">using the sampled group's rewards as a baseline.</b>
+            </article>
+            <article>
+              <small>03 · SFT vs. RL</small>
+              <p>SFT learns from targets; RL learns from…</p>
+              <b class="fragment fade-up">outcomes produced by the current policy.</b>
+            </article>
+          </div>
+          <div class="confidence-poll fragment fade-up"><small>SELF-CHECK</small><span>1 · still foggy</span><i></i><span>5 · I could teach it</span></div>
+          <aside class="notes">Timing: 3 minutes. Ask students to answer each sentence before revealing it. Finish with a 1-to-5 confidence poll by fingers. If most students show 1–2, revisit the maze loop before ending.</aside>
+        </section>
+
         <section class="takeaway-slide" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.20">
           <div class="takeaway-shade"></div>
-          <p class="kicker">TAKEAWAY</p>
+          <p class="kicker">SUMMARY · 45:00–50:00</p>
           <h2>The maze never disappeared.<br /><em>Its walls became language.</em></h2>
           <div class="takeaways">
             <p class="fragment fade-up"><span class="num">01</span><span class="takeaway-text">RL uses <strong>outcomes</strong> to change future behavior probabilities</span></p>
             <p class="fragment fade-up"><span class="num">02</span><span class="takeaway-text">A strong prior + reasoning actions make open tasks explorable</span></p>
-            <p class="fragment fade-up"><span class="num">03</span><span class="takeaway-text">RLVR succeeds first where feedback is easy to verify</span></p>
-            <p class="fragment fade-up"><span class="num">04</span><span class="takeaway-text">SFT, mid-training, and RL form <strong>one system</strong>, not a contest</span></p>
+            <p class="fragment fade-up"><span class="num">03</span><span class="takeaway-text">GRPO learns by comparing a group, then making stable policy updates</span></p>
+            <p class="fragment fade-up"><span class="num">04</span><span class="takeaway-text">RLVR succeeds first where feedback is easy to verify</span></p>
+            <p class="fragment fade-up"><span class="num">05</span><span class="takeaway-text">SFT, mid-training, and RL form <strong>one system</strong>, not a contest</span></p>
           </div>
           <blockquote class="fragment fade-up">RL is an amplifier: it amplifies the prior — and the reward design.</blockquote>
-          <aside class="notes">Return to the opening maze. The audience should leave with these four points. The final line emphasizes that RL amplifies both capability and mistakes in objective design.</aside>
+          <aside class="notes">Timing: 5 minutes. Return to AlphaGo's surprising move and the opening maze. Ask students to explain how the same loop appears in an LLM. The five points restate the lesson outcomes; the final line emphasizes that RL amplifies both capability and mistakes in objective design.</aside>
         </section>
 
         <section class="sources-slide">
@@ -414,16 +687,18 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
             <div>
               <a href="https://www.nature.com/articles/nature14236"><span>01</span><b>Human-level control through deep RL</b><small>Mnih et al. · Nature · 2015</small></a>
               <a href="https://deepmind.google/research/alphago/"><span>02</span><b>AlphaGo</b><small>Google DeepMind</small></a>
-              <a href="https://ysymyth.github.io/The-Second-Half/"><span>03</span><b>The Second Half</b><small>Shunyu Yao · 2025</small></a>
-              <a href="https://arxiv.org/abs/2203.02155"><span>04</span><b>Training language models with human feedback</b><small>Ouyang et al. · 2022</small></a>
-              <a href="https://arxiv.org/abs/2501.12948"><span>05</span><b>DeepSeek-R1</b><small>DeepSeek-AI · 2025</small></a>
+              <a href="https://deepmind.google/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/"><span>03</span><b>AlphaStar</b><small>Google DeepMind · 2019</small></a>
+              <a href="https://ysymyth.github.io/The-Second-Half/"><span>04</span><b>The Second Half</b><small>Shunyu Yao · 2025</small></a>
+              <a href="https://arxiv.org/abs/2203.02155"><span>05</span><b>Training language models with human feedback</b><small>Ouyang et al. · 2022</small></a>
+              <a href="https://arxiv.org/abs/2402.03300"><span>06</span><b>DeepSeekMath and GRPO</b><small>Shao et al. · 2024</small></a>
             </div>
             <div>
-              <a href="https://arxiv.org/abs/2501.17161"><span>06</span><b>SFT Memorizes, RL Generalizes</b><small>Chu et al. · 2025</small></a>
-              <a href="https://arxiv.org/abs/2604.06628"><span>07</span><b>Rethinking Generalization in Reasoning SFT</b><small>Ren et al. · 2026</small></a>
-              <a href="https://arxiv.org/abs/2503.14476"><span>08</span><b>DAPO</b><small>Yu et al. · 2025</small></a>
-              <a href="https://arxiv.org/abs/2306.13649"><span>09</span><b>On-Policy Distillation</b><small>Agarwal et al. · 2023</small></a>
-              <a href="https://arxiv.org/abs/2604.15149"><span>10</span><b>LLMs Gaming Verifiers</b><small>Helff et al. · 2026</small></a>
+              <a href="https://arxiv.org/abs/2501.12948"><span>07</span><b>DeepSeek-R1</b><small>DeepSeek-AI · 2025</small></a>
+              <a href="https://arxiv.org/abs/2501.17161"><span>08</span><b>SFT Memorizes, RL Generalizes</b><small>Chu et al. · 2025</small></a>
+              <a href="https://arxiv.org/abs/2604.06628"><span>09</span><b>Rethinking Generalization in Reasoning SFT</b><small>Ren et al. · 2026</small></a>
+              <a href="https://arxiv.org/abs/2503.14476"><span>10</span><b>DAPO</b><small>Yu et al. · 2025</small></a>
+              <a href="https://arxiv.org/abs/2306.13649"><span>11</span><b>On-Policy Distillation</b><small>Agarwal et al. · 2023</small></a>
+              <a href="https://arxiv.org/abs/2604.15149"><span>12</span><b>LLMs Gaming Verifiers</b><small>Helff et al. · 2026</small></a>
             </div>
           </div>
           <p class="sources-foot">Every source is clickable · Press <kbd>S</kbd> for speaker notes · Press <kbd>F</kbd> for full screen</p>
