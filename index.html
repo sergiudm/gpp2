@@ -36,24 +36,6 @@
           <aside class="notes">Opening question: if an AI receives only a win or loss, can it discover a strategy that humans never demonstrated? Let the AlphaStar video supply the surprise before we reduce the idea to a maze.</aside>
         </section>
 
-        <!-- bridge in
-         Alpha Go and previous traditional ML comparison
-        -->
-        <!-- quiz for pre assessment -->
-
-        <!--outcome
-        1. Compare supervised fine-tuning (SFT) and reinforcement learning (RL) and explain the main difference between learning from examples and learning from outcomes.
-        2. Explain the basic reinforcement learning process using the concepts of actions, rewards, and outcomes.
-        3. Identify the advantages and limitations of reinforcement learning on LLMs.
-        -->
-
-        <!--content
-        0. RL basics
-        1. comparison between SFT and RL
-        2. GRPO
-        3. Advantages and
-        -->
-
         <section class="video-bridge-slide">
           <header>
             <p class="kicker">BRIDGE-IN</p>
@@ -518,37 +500,54 @@ Shao et al., DeepSeekMath, Algorithm 1 and Section 4.1. https://arxiv.org/abs/24
         <section class="research-slide">
           <header>
             <p class="kicker">PROMPT &amp; INVESTIGATE</p>
-            <h2>Use an AI assistant to investigate one current LLM post-training method.</h2>
+            <h2>Prompt Challenge (5 mins): RL in LLM Post-training</h2>
           </header>
           <div class="research-layout">
             <div class="ai-research-prompt">
               <small>PROMPT YOUR AI</small>
-              <blockquote>Find one reinforcement-learning algorithm for LLM post-training introduced or substantially revised since 2024. Compare it with GRPO. Use an original paper or official technical report. Answer the four questions shown, include source links, distinguish reported results from your inference, and flag uncertainty.</blockquote>
-              <p><strong>Evidence rule</strong><span>An AI answer is a lead. Open the primary source before you trust the claim.</span></p>
+              <blockquote>Find one reinforcement-learning algorithm for LLM post-training. Answer the six questions shown and link to primary sources.</blockquote>
+              <p><strong>Evidence rule</strong><span>An AI answer is a lead. Open the original paper before you trust the claim.</span></p>
             </div>
             <div class="research-questions">
               <small>KEEP THESE QUESTIONS OPEN</small>
-              <article><span>01</span><div><b>Data</b><p>Fresh responses from the current policy, or a fixed dataset?</p></div></article>
-              <article><span>02</span><div><b>Signal</b><p>Who or what supplies reward: humans, an AI judge, a reward model, a verifier, or an environment?</p></div></article>
-              <article><span>03</span><div><b>Update</b><p>How are advantage, credit, and policy drift handled?</p></div></article>
-              <article><span>04</span><div><b>Evidence</b><p>What improved, against which baseline, and what limitation remains?</p></div></article>
+              <article><span>01</span><div><b>Motivation</b><p>Which failure, cost, or bottleneck does the method target?</p></div></article>
+              <article><span>02</span><div><b>Data</b><p>Fresh rollouts, asynchronous or replayed trajectories, or a fixed dataset?</p></div></article>
+              <article><span>03</span><div><b>Reward</b><p>Who supplies it, and is it outcome-, process-, single-, or multi-reward?</p></div></article>
+              <article><span>04</span><div><b>Credit</b><p>Critic, group, leave-one-out, or another baseline—and at what granularity?</p></div></article>
+              <article><span>05</span><div><b>Stability &amp; cost</b><p>How is policy drift controlled, and what compute or memory trade-off changes?</p></div></article>
+              <article><span>06</span><div><b>Evidence</b><p>Which baseline, model, task, and ablation support the claim? What remains uncertain?</p></div></article>
             </div>
           </div>
           <div class="search-starters">
             <small>SEARCH STARTERS</small>
-            <a href="https://arxiv.org/abs/2402.14740">RLOO</a>
-            <a href="https://arxiv.org/abs/2503.14476">DAPO</a>
-            <a href="https://arxiv.org/abs/2507.18071">GSPO</a>
+            <div class="starter-links">
+              <a href="https://arxiv.org/abs/2402.14740">RLOO</a>
+              <a href="https://arxiv.org/abs/2503.14476">DAPO</a>
+              <a href="https://arxiv.org/abs/2507.18071">GSPO</a>
+              <a href="https://arxiv.org/abs/2506.13585">CISPO</a>
+              <a href="https://arxiv.org/abs/2504.05118">VAPO</a>
+              <a href="https://arxiv.org/abs/2601.05242">GDPO</a>
+              <a href="https://arxiv.org/abs/2511.20347">SAPO</a>
+              <a href="https://arxiv.org/abs/2607.07508">SAO</a>
+              <a href="https://arxiv.org/search/?query=LLM+reinforcement+learning+post-training&amp;searchtype=all">more…</a>
+            </div>
             <p><strong>Boundary check:</strong> not every post-training optimizer is online RL.</p>
           </div>
-          <aside class="notes">Timing: 5 minutes. Put students in pairs. Ask each pair to choose one method, paste the prompt into an AI assistant, and keep this slide projected. The goal is not to memorize an acronym; it is to locate the method inside the RL loop. Require students to open at least one original paper or official technical report before they report a claim. The three starter terms span different design choices and give the room enough variety without prescribing an answer.
+          <aside class="notes">Timing: 5 minutes. Put students in pairs. Ask each pair to choose one method, paste the prompt into an AI assistant, and keep this slide projected. The goal is not to memorize an acronym; it is to locate the method inside the RL loop. Require students to open at least one original paper or official technical report before they report a claim. The starter terms span different choices in baselines, value estimation, update granularity, reward normalization, and synchronous versus asynchronous training.
 
-If students choose an offline preference-optimization method, do not reject it immediately. Ask them to use Question 1 to explain whether fresh trajectories are sampled from the current policy. That distinction becomes a useful discussion point.
+If students choose an offline preference-optimization method, do not reject it immediately. Ask them to use Question 2 to explain whether fresh trajectories are sampled from the current policy. That distinction becomes a useful discussion point.
+
+Naming note: “SAPO” is overloaded in recent literature. The link on this slide refers specifically to Soft Adaptive Policy Optimization.
 
 [Sources]
 Ahmadian et al., Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs. https://arxiv.org/abs/2402.14740
 Yu et al., DAPO: An Open-Source LLM Reinforcement Learning System at Scale. https://arxiv.org/abs/2503.14476
-Zheng et al., Group Sequence Policy Optimization. https://arxiv.org/abs/2507.18071</aside>
+Zheng et al., Group Sequence Policy Optimization. https://arxiv.org/abs/2507.18071
+MiniMax et al., MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention. https://arxiv.org/abs/2506.13585
+Yue et al., VAPO: Efficient and Reliable Reinforcement Learning for Advanced Reasoning Tasks. https://arxiv.org/abs/2504.05118
+Liu et al., GDPO: Group reward-Decoupled Normalization Policy Optimization for Multi-reward RL Optimization. https://arxiv.org/abs/2601.05242
+Gao et al., Soft Adaptive Policy Optimization. https://arxiv.org/abs/2511.20347
+Hou et al., Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning. https://arxiv.org/abs/2607.07508</aside>
         </section>
 
         <section class="discussion-slide">
@@ -558,18 +557,20 @@ Zheng et al., Group Sequence Policy Optimization. https://arxiv.org/abs/2507.180
           </header>
           <div class="discussion-layout">
             <div class="comparison-board" aria-label="Class comparison board">
-              <div class="comparison-board-head"><span>METHOD</span><span>DATA</span><span>SIGNAL</span><span>UPDATE</span><span>EVIDENCE</span></div>
-              <div class="comparison-board-row"><b>01</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
-              <div class="comparison-board-row"><b>02</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
-              <div class="comparison-board-row"><b>03</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
-              <div class="comparison-board-row"><b>04</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-head"><span>METHOD</span><span>MOTIVE</span><span>DATA + REWARD</span><span>CREDIT + STABILITY</span><span>EVIDENCE</span></div>
+              <div class="comparison-board-row"><b>01</b><span>target problem?</span><span>fresh / fixed? source?</span><span>baseline + guardrail?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>02</b><span>target problem?</span><span>fresh / fixed? source?</span><span>baseline + guardrail?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>03</b><span>target problem?</span><span>fresh / fixed? source?</span><span>baseline + guardrail?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>04</b><span>target problem?</span><span>fresh / fixed? source?</span><span>baseline + guardrail?</span><span>claim + caveat?</span></div>
             </div>
             <div class="discussion-questions">
               <small>KEEP ASKING</small>
-              <p><span>01</span><b>Fresh responses from the current policy, or a fixed dataset?</b></p>
-              <p><span>02</span><b>Who or what supplies the reward?</b></p>
-              <p><span>03</span><b>How are advantage, credit, and policy drift handled?</b></p>
-              <p><span>04</span><b>What improved, against which baseline, and what limitation remains?</b></p>
+              <p><span>01</span><b>What problem is the method trying to fix?</b></p>
+              <p><span>02</span><b>Fresh, replayed, asynchronous, or fixed data?</b></p>
+              <p><span>03</span><b>Where does reward come from, and at what granularity?</b></p>
+              <p><span>04</span><b>How are advantage and credit estimated?</b></p>
+              <p><span>05</span><b>How are drift, compute, and memory controlled?</b></p>
+              <p><span>06</span><b>What evidence supports the claim—and what is missing?</b></p>
             </div>
           </div>
           <div class="discussion-synthesis"><strong>Our synthesis:</strong><span>Most methods rearrange a small set of choices—data collection, reward, baseline, credit assignment, and update stability.</span></div>
