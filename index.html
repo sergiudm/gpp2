@@ -22,7 +22,7 @@
     <div id="deck-hud" aria-hidden="true">
       <span>CS-XXX · RL FOR LLMS</span>
     </div>
-    <div id="slide-page-number" aria-label="Slide 1 of 34">01 / 34</div>
+    <div id="slide-page-number" aria-label="Slide 1 of 36">01 / 36</div>
     <div class="reveal">
       <div class="slides">
         <section class="hero-slide course-hero" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.38">
@@ -515,6 +515,74 @@ Shao et al., DeepSeekMath, Algorithm 1 and Section 4.1. https://arxiv.org/abs/24
           <aside class="notes">Timing: 1 minute. Reveal B. Because every reward equals the group mean, each numerator ri − mean(r) is zero. The ε term prevents division by zero but does not create a learning direction. Connect this to exploration: if every sampled completion fails, strengthen the prior, increase useful exploration, or improve the reward/task curriculum.</aside>
         </section>
 
+        <section class="research-slide">
+          <header>
+            <p class="kicker">PROMPT &amp; INVESTIGATE</p>
+            <h2>Use an AI assistant to investigate one current LLM post-training method.</h2>
+          </header>
+          <div class="research-layout">
+            <div class="ai-research-prompt">
+              <small>PROMPT YOUR AI</small>
+              <blockquote>Find one reinforcement-learning algorithm for LLM post-training introduced or substantially revised since 2024. Compare it with GRPO. Use an original paper or official technical report. Answer the four questions shown, include source links, distinguish reported results from your inference, and flag uncertainty.</blockquote>
+              <p><strong>Evidence rule</strong><span>An AI answer is a lead. Open the primary source before you trust the claim.</span></p>
+            </div>
+            <div class="research-questions">
+              <small>KEEP THESE QUESTIONS OPEN</small>
+              <article><span>01</span><div><b>Data</b><p>Fresh responses from the current policy, or a fixed dataset?</p></div></article>
+              <article><span>02</span><div><b>Signal</b><p>Who or what supplies reward: humans, an AI judge, a reward model, a verifier, or an environment?</p></div></article>
+              <article><span>03</span><div><b>Update</b><p>How are advantage, credit, and policy drift handled?</p></div></article>
+              <article><span>04</span><div><b>Evidence</b><p>What improved, against which baseline, and what limitation remains?</p></div></article>
+            </div>
+          </div>
+          <div class="search-starters">
+            <small>SEARCH STARTERS</small>
+            <a href="https://arxiv.org/abs/2402.14740">RLOO</a>
+            <a href="https://arxiv.org/abs/2503.14476">DAPO</a>
+            <a href="https://arxiv.org/abs/2507.18071">GSPO</a>
+            <p><strong>Boundary check:</strong> not every post-training optimizer is online RL.</p>
+          </div>
+          <aside class="notes">Timing: 5 minutes. Put students in pairs. Ask each pair to choose one method, paste the prompt into an AI assistant, and keep this slide projected. The goal is not to memorize an acronym; it is to locate the method inside the RL loop. Require students to open at least one original paper or official technical report before they report a claim. The three starter terms span different design choices and give the room enough variety without prescribing an answer.
+
+If students choose an offline preference-optimization method, do not reject it immediately. Ask them to use Question 1 to explain whether fresh trajectories are sampled from the current policy. That distinction becomes a useful discussion point.
+
+[Sources]
+Ahmadian et al., Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs. https://arxiv.org/abs/2402.14740
+Yu et al., DAPO: An Open-Source LLM Reinforcement Learning System at Scale. https://arxiv.org/abs/2503.14476
+Zheng et al., Group Sequence Policy Optimization. https://arxiv.org/abs/2507.18071</aside>
+        </section>
+
+        <section class="discussion-slide">
+          <header>
+            <p class="kicker">DISCUSS &amp; SYNTHESIZE</p>
+            <h2>Different names matter only when they change the learning loop.</h2>
+          </header>
+          <div class="discussion-layout">
+            <div class="comparison-board" aria-label="Class comparison board">
+              <div class="comparison-board-head"><span>METHOD</span><span>DATA</span><span>SIGNAL</span><span>UPDATE</span><span>EVIDENCE</span></div>
+              <div class="comparison-board-row"><b>01</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>02</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>03</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
+              <div class="comparison-board-row"><b>04</b><span>fresh / fixed?</span><span>reward source?</span><span>baseline + stability?</span><span>claim + caveat?</span></div>
+            </div>
+            <div class="discussion-questions">
+              <small>KEEP ASKING</small>
+              <p><span>01</span><b>Fresh responses from the current policy, or a fixed dataset?</b></p>
+              <p><span>02</span><b>Who or what supplies the reward?</b></p>
+              <p><span>03</span><b>How are advantage, credit, and policy drift handled?</b></p>
+              <p><span>04</span><b>What improved, against which baseline, and what limitation remains?</b></p>
+            </div>
+          </div>
+          <div class="discussion-synthesis"><strong>Our synthesis:</strong><span>Most methods rearrange a small set of choices—data collection, reward, baseline, credit assignment, and update stability.</span></div>
+          <aside class="notes">Timing: 10 minutes. Invite three or four pairs to give a concise report. For every method, fill the same conceptual row verbally: data, signal, update, and evidence. Keep the four questions visible so later reports become comparisons rather than isolated summaries.
+
+Use the final minutes to surface disagreements. Ask: Is this actually online RL? What problem does the method claim to fix relative to GRPO or PPO? Does the reported evidence isolate the algorithm, or did the model, data, reward, and compute also change? Close by emphasizing the synthesis line: modern methods differ, but they can still be analyzed with the RL vocabulary students already know.
+
+[Sources]
+Ahmadian et al., Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs. https://arxiv.org/abs/2402.14740
+Yu et al., DAPO: An Open-Source LLM Reinforcement Learning System at Scale. https://arxiv.org/abs/2503.14476
+Zheng et al., Group Sequence Policy Optimization. https://arxiv.org/abs/2507.18071</aside>
+        </section>
+
         <section class="prior-slide">
           <header>
             <p class="kicker">WHY NOW?</p>
@@ -795,8 +863,10 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
               <a href="https://arxiv.org/abs/2501.17161"><span>08</span><b>SFT Memorizes, RL Generalizes</b><small>Chu et al. · 2025</small></a>
               <a href="https://arxiv.org/abs/2604.06628"><span>09</span><b>Rethinking Generalization in Reasoning SFT</b><small>Ren et al. · 2026</small></a>
               <a href="https://arxiv.org/abs/2503.14476"><span>10</span><b>DAPO</b><small>Yu et al. · 2025</small></a>
-              <a href="https://arxiv.org/abs/2306.13649"><span>11</span><b>On-Policy Distillation</b><small>Agarwal et al. · 2023</small></a>
-              <a href="https://arxiv.org/abs/2604.15149"><span>12</span><b>LLMs Gaming Verifiers</b><small>Helff et al. · 2026</small></a>
+              <a href="https://arxiv.org/abs/2402.14740"><span>11</span><b>RLOO and REINFORCE-style RLHF</b><small>Ahmadian et al. · 2024</small></a>
+              <a href="https://arxiv.org/abs/2507.18071"><span>12</span><b>Group Sequence Policy Optimization</b><small>Zheng et al. · 2025</small></a>
+              <a href="https://arxiv.org/abs/2306.13649"><span>13</span><b>On-Policy Distillation</b><small>Agarwal et al. · 2023</small></a>
+              <a href="https://arxiv.org/abs/2604.15149"><span>14</span><b>LLMs Gaming Verifiers</b><small>Helff et al. · 2026</small></a>
             </div>
           </div>
           <p class="sources-foot">Every source is clickable · Press <kbd>S</kbd> for speaker notes · Press <kbd>F</kbd> for full screen</p>
@@ -814,7 +884,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
         </div>
       </div>
       <div class="slide-peek-meta">
-        <span id="slide-peek-number">01 / 34</span>
+        <span id="slide-peek-number">01 / 36</span>
         <div>
           <small id="slide-peek-kicker">LESSON</small>
           <b id="slide-peek-title">CS-XXX: Large Language Models</b>
