@@ -1,13 +1,14 @@
 # Can RL Finally Generalize?
 
-An animated, widescreen HTML presentation for a 50-minute undergraduate lesson on reinforcement learning, from AlphaGo and maze navigation to GRPO and RL for large language models. The 34-slide deck includes prerequisite review, eight formative quiz slides, a post-assessment, speaker notes, and source links.
+An animated, widescreen HTML presentation for a 50-minute undergraduate lesson on reinforcement learning, from an AlphaStar video bridge and maze navigation to GRPO and RL for large language models. The 34-slide deck includes prerequisite review, seven formative quiz slides, a post-assessment, detailed review notes, and source links.
 
 ## Present
 
 - Use the left and right arrow keys to navigate.
 - Press `F` for full screen.
 - Press `S` for speaker view and notes.
-- Hover over `SLIDES` or press `M` to open the clickable slide map.
+- Hover over the left slide rail to preview a slide; click a tick to jump there.
+- Press `M` to focus the current slide on the rail, then use arrow keys to browse.
 - Use the `DAY / NIGHT` control to switch presentation themes.
 - Press `Esc` for the slide overview.
 
