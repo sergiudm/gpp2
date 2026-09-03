@@ -13,6 +13,17 @@ document.querySelectorAll('[data-math]').forEach((element) => {
   });
 });
 
+const courseHero = document.querySelector('.course-hero');
+if (courseHero) {
+  const courseLogo = document.createElement('img');
+  courseLogo.className = 'course-logo';
+  courseLogo.src = './assets/ucsc-baskin-engineering.png';
+  courseLogo.alt = 'UC Santa Cruz Baskin Engineering';
+  courseLogo.decoding = 'async';
+  courseLogo.fetchPriority = 'high';
+  courseHero.append(courseLogo);
+}
+
 const deck = new Reveal({
   hash: true,
   history: true,
