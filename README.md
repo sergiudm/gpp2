@@ -1,4 +1,4 @@
-# Can RL Finally Generalize?
+# CS-XXX: Large Language Models
 
 An animated, widescreen HTML presentation for a 50-minute undergraduate lesson on reinforcement learning, from an AlphaStar video bridge and maze navigation to GRPO and RL for large language models. The 34-slide deck includes prerequisite review, seven formative quiz slides, a post-assessment, detailed review notes, and source links.
 

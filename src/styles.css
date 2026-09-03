@@ -27,6 +27,10 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .hero-copy { max-width: 850px; transform: translateY(-12px); }
 .hero-copy .eyebrow { margin-bottom: 30px; }
 .hero-copy .dek { margin-top: 28px; color: #d9e1eb; font-size: 34px; font-weight: 520; }
+.course-hero .hero-copy { max-width: 1080px; }
+.course-hero h1 { font-size: 96px; line-height: .94; letter-spacing: -.055em; }
+.course-hero .course-code { color: var(--paper); font-size: .70em; letter-spacing: -.035em; }
+.course-hero .dek { margin-top: 34px; font-size: 32px; }
 .byline { margin-top: 76px !important; font-size: 19px !important; color: var(--muted); }
 .scroll-cue { position: absolute; right: 76px; bottom: 52px; font-size: 17px; color: var(--muted); }
 .scroll-cue span { display: inline-block; margin-left: 10px; color: var(--mint); animation: nudge 1.4s ease-in-out infinite; }
