@@ -20,8 +20,9 @@
   <body>
     <canvas id="ambient" aria-hidden="true"></canvas>
     <div id="deck-hud" aria-hidden="true">
-      <span>CS-XXX · RL FOR LLMS</span><span id="slide-count">01 / 34</span>
+      <span>CS-XXX · RL FOR LLMS</span>
     </div>
+    <div id="slide-page-number" aria-label="Slide 1 of 34">01 / 34</div>
     <div class="reveal">
       <div class="slides">
         <section class="hero-slide course-hero" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.38">
@@ -31,7 +32,7 @@
             <p class="dek">Reinforcement Learning for LLMs</p>
             <p class="byline">Manqi Luo · Qijun Han</p>
           </div>
-          <div class="scroll-cue">Press → to begin <span>→</span></div>
+          <div class="scroll-cue">Press an arrow key to begin</div>
           <aside class="notes">Opening question: if an AI receives only a win or loss, can it discover a strategy that humans never demonstrated? Let the AlphaStar video supply the surprise before we reduce the idea to a maze.</aside>
         </section>
 
@@ -55,7 +56,7 @@
 
         <section class="video-bridge-slide">
           <header>
-            <p class="kicker">BRIDGE-IN · 00:00–05:00</p>
+            <p class="kicker">BRIDGE-IN</p>
             <h2>Watch AlphaStar act before we name the learning loop.</h2>
           </header>
           <div class="video-bridge-layout">
@@ -86,7 +87,7 @@ Google DeepMind, AlphaStar: Grandmaster level in StarCraft II using multi-agent 
 
         <section class="outcomes-slide">
           <header>
-            <p class="kicker">LEARNING OUTCOMES · 05:00–07:00</p>
+            <p class="kicker">LEARNING OUTCOMES</p>
             <h2>By the end of this class, you can explain the loop — and judge when to use it.</h2>
           </header>
           <div class="outcomes-grid">
@@ -100,7 +101,7 @@ Google DeepMind, AlphaStar: Grandmaster level in StarCraft II using multi-agent 
 
         <section class="prereq-slide">
           <header>
-            <p class="kicker">PREREQUISITES · 07:00–08:00</p>
+            <p class="kicker">PREREQUISITES</p>
             <h2>You need a small probability toolkit — <em>not a full RL course.</em></h2>
           </header>
           <div class="prereq-grid">
@@ -121,7 +122,7 @@ Google DeepMind, AlphaStar: Grandmaster level in StarCraft II using multi-agent 
         </section>
 
         <section class="quiz-slide pre-quiz">
-          <p class="kicker">PRE-ASSESSMENT · 08:00–10:00</p>
+          <p class="kicker">PRE-ASSESSMENT</p>
           <div class="quiz-number">01</div>
           <h2>An LLM policy samples token ID 314. What happens next?</h2>
           <p class="quiz-prompt">Choose the statement that correctly identifies the RL action and the path back to readable text.</p>
@@ -135,7 +136,7 @@ Final-review cue: state = prompt plus generated context; action = next sampled t
         </section>
 
         <section class="quiz-slide pre-quiz">
-          <p class="kicker">PRE-ASSESSMENT · 10:00–12:00</p>
+          <p class="kicker">PRE-ASSESSMENT</p>
           <div class="quiz-number">02</div>
           <h2>A sampled action has positive advantage. What should policy optimization do?</h2>
           <div class="quiz-options four">
@@ -149,7 +150,7 @@ Final-review cue: positive advantage → increase log-probability; negative adva
 
         <section class="maze-slide">
           <header>
-            <p class="kicker">CORE LESSON · 12:00 · THE LOOP</p>
+            <p class="kicker">CORE LESSON · THE LOOP</p>
             <h2>One objective: <em>reach the goal by navigating around obstacles.</em></h2>
           </header>
           <div class="maze-stage">
@@ -221,7 +222,7 @@ Sutton & Barto, Reinforcement Learning: An Introduction, 2nd ed. http://incomple
         </section>
 
         <section class="quiz-slide concept-quiz">
-          <p class="kicker">QUICK CHECK · 15:00</p>
+          <p class="kicker">QUICK CHECK</p>
           <div class="quiz-number">03</div>
           <h2>The maze agent reaches the goal and receives +1. Which RL element is “+1”?</h2>
           <div class="quiz-options four">
@@ -234,7 +235,7 @@ Sutton & Barto, Reinforcement Learning: An Introduction, 2nd ed. http://incomple
         <section class="history-slide" data-background-image="./assets/rl-history-triptych.png" data-background-opacity="0.40">
           <div class="history-shade"></div>
           <header>
-            <p class="kicker">SPECIALISTS · 15:30</p>
+            <p class="kicker">SPECIALISTS</p>
             <h2>Old-school RL was astonishingly strong — inside one world</h2>
           </header>
           <div class="history-line">
@@ -255,7 +256,7 @@ Jumper et al., Highly accurate protein structure prediction with AlphaFold. http
 
         <section class="transfer-slide">
           <header>
-            <p class="kicker">THE TRANSFER GAP · 16:30</p>
+            <p class="kicker">THE TRANSFER GAP</p>
             <h2>Change the world, and the skill often <em>does not transfer</em></h2>
           </header>
           <div class="world-transfer">
@@ -283,7 +284,7 @@ Jumper et al., Highly accurate protein structure prediction with AlphaFold. http
         </section>
 
         <section class="quiz-slide concept-quiz">
-          <p class="kicker">THINK–PAIR–SHARE · 18:00</p>
+          <p class="kicker">THINK–PAIR–SHARE</p>
           <div class="quiz-number">04</div>
           <h2>Suppose we rename every Go-board coordinate. Can AlphaGo immediately use the old policy?</h2>
           <div class="quiz-options two">
@@ -308,7 +309,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="pipeline-slide">
           <header>
-            <p class="kicker">ONE TRAINING SYSTEM · 20:00</p>
+            <p class="kicker">ONE TRAINING SYSTEM</p>
             <h2>RL is not SFT's opponent. It is one stage in a training system.</h2>
           </header>
           <div class="pipeline" aria-label="High-level stages of large language model training">
@@ -333,7 +334,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="mapping-slide">
           <header>
-            <p class="kicker">RL, RE-MAPPED · 21:00</p>
+            <p class="kicker">RL, RE-MAPPED</p>
             <h2>Put an LLM back in the maze: every RL element is still there</h2>
           </header>
           <div class="mapping-stage">
@@ -359,7 +360,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="grpo-slide grpo-sample">
           <header>
-            <p class="kicker">GRPO · STEP 1 · 22:00</p>
+            <p class="kicker">GRPO · STEP 1</p>
             <h2>Ask one question. Sample a <em>group</em> of possible trajectories.</h2>
           </header>
           <div class="grpo-stage">
@@ -385,7 +386,7 @@ Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
 
         <section class="grpo-slide grpo-relative">
           <header>
-            <p class="kicker">GRPO · STEP 2 · 23:30</p>
+            <p class="kicker">GRPO · STEP 2</p>
             <h2>Convert rewards into <em>relative advantage</em>.</h2>
           </header>
           <div class="advantage-layout">
@@ -414,7 +415,7 @@ Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
 
         <section class="grpo-slide grpo-token-credit">
           <header>
-            <p class="kicker">GRPO · STEP 3 · 25:00</p>
+            <p class="kicker">GRPO · STEP 3</p>
             <h2>With outcome supervision, every token inherits the trajectory's advantage.</h2>
           </header>
           <div class="token-credit-layout">
@@ -445,7 +446,7 @@ Shao et al., DeepSeekMath, Section 4.1.2. https://arxiv.org/abs/2402.03300</asid
 
         <section class="grpo-slide grpo-update">
           <header>
-            <p class="kicker">GRPO · STEP 4 · 26:30</p>
+            <p class="kicker">GRPO · STEP 4</p>
             <h2>Update token probabilities — but <em>do not let one batch move the policy too far.</em></h2>
           </header>
           <div class="update-equation" data-math="\max_\theta\;\mathbb{E}\!\left[\min\!\left(\rho_{i,t}\hat A_{i,t},\operatorname{clip}(\rho_{i,t},1-\varepsilon,1+\varepsilon)\hat A_{i,t}\right)-\beta D_{KL}\right]"></div>
@@ -467,7 +468,7 @@ Shao et al., DeepSeekMath. https://arxiv.org/abs/2402.03300</aside>
 
         <section class="grpo-slide grpo-review">
           <header>
-            <p class="kicker">GRPO · STEP 5 · 28:00</p>
+            <p class="kicker">GRPO · STEP 5</p>
             <h2>For final review, remember five verbs.</h2>
           </header>
           <div class="grpo-cycle">
@@ -504,7 +505,7 @@ Shao et al., DeepSeekMath, Algorithm 1 and Section 4.1. https://arxiv.org/abs/24
         </section>
 
         <section class="quiz-slide grpo-quiz">
-          <p class="kicker">QUICK CHECK · 29:30</p>
+          <p class="kicker">QUICK CHECK</p>
           <div class="quiz-number">05</div>
           <h2>A GRPO group receives rewards [1, 1, 1, 1]. What useful comparison is available?</h2>
           <div class="quiz-options three">
@@ -516,7 +517,7 @@ Shao et al., DeepSeekMath, Algorithm 1 and Section 4.1. https://arxiv.org/abs/24
 
         <section class="prior-slide">
           <header>
-            <p class="kicker">WHY NOW? · 30:30</p>
+            <p class="kicker">WHY NOW?</p>
             <h2>An infinite action space should be a disaster. <em>A strong prior makes it an opportunity.</em></h2>
           </header>
           <div class="prior-field">
@@ -541,7 +542,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="rlvr-slide">
           <header>
-            <p class="kicker">RL WITH VERIFIABLE REWARDS · 31:30</p>
+            <p class="kicker">RL WITH VERIFIABLE REWARDS</p>
             <h2>RLVR works first in math and code because correctness is cheap to check</h2>
           </header>
           <div class="verifier-equation">
@@ -565,7 +566,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="code-slide">
           <header>
-            <p class="kicker">ONE PROMPT · MANY TRAJECTORIES · 32:30</p>
+            <p class="kicker">ONE PROMPT · MANY TRAJECTORIES</p>
             <h2>A demonstration gives one path. A verifier can compare many.</h2>
           </header>
           <div class="code-arena">
@@ -581,7 +582,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
         </section>
 
         <section class="quiz-slide concept-quiz">
-          <p class="kicker">QUICK CHECK · 34:00</p>
+          <p class="kicker">QUICK CHECK</p>
           <div class="quiz-number">06</div>
           <h2>The code passes every visible unit test, but it is insecure and unreadable. What did RL optimize?</h2>
           <div class="quiz-options three">
@@ -593,7 +594,7 @@ DeepSeek-AI, DeepSeek-R1. https://arxiv.org/abs/2501.12948</aside>
 
         <section class="sft-rl-slide">
           <header>
-            <p class="kicker">COOPERATION, NOT OPPOSITION · 35:00</p>
+            <p class="kicker">COOPERATION, NOT OPPOSITION</p>
             <h2>SFT builds the runway. RL explores beyond it.</h2>
           </header>
           <div class="runway">
@@ -620,7 +621,7 @@ Chu et al., SFT Memorizes, RL Generalizes. https://arxiv.org/abs/2501.17161</asi
 
         <section class="initialization-slide">
           <header>
-            <p class="kicker">INITIALIZATION SHAPES THE CEILING · 36:00</p>
+            <p class="kicker">INITIALIZATION SHAPES THE CEILING</p>
             <h2>RL efficiency is shaped before RL even begins</h2>
           </header>
           <div class="init-spectrum">
@@ -650,7 +651,7 @@ PRISM: Demystifying Retention and Interaction in Mid-Training. https://arxiv.org
         </section>
 
         <section class="quiz-slide concept-quiz">
-          <p class="kicker">THINK–PAIR–SHARE · 38:00</p>
+          <p class="kicker">THINK–PAIR–SHARE</p>
           <div class="quiz-number">07</div>
           <h2>Your model samples 64 solutions and every verifier reward is zero. What is the best first intervention?</h2>
           <div class="quiz-options three">
@@ -662,7 +663,7 @@ PRISM: Demystifying Retention and Interaction in Mid-Training. https://arxiv.org
 
         <section class="compare-slide">
           <header>
-            <p class="kicker">REVIEW BY COMPARISON · 39:00</p>
+            <p class="kicker">REVIEW BY COMPARISON</p>
             <h2>SFT learns from demonstrations. RL learns from outcomes.</h2>
           </header>
           <div class="compare-table" role="table" aria-label="Comparison of SFT and reinforcement learning">
@@ -684,7 +685,7 @@ Ren et al., Rethinking Generalization in Reasoning SFT. https://arxiv.org/abs/26
 
         <section class="limits-slide">
           <header>
-            <p class="kicker">THE BILL COMES DUE · 40:30</p>
+            <p class="kicker">THE BILL COMES DUE</p>
             <h2>RL is loyal to its objective — <em>even when the objective is wrong</em></h2>
           </header>
           <div class="limits-layout">
@@ -710,7 +711,7 @@ Yu et al., DAPO. https://arxiv.org/abs/2503.14476</aside>
 
         <section class="opd-slide">
           <header>
-            <p class="kicker">FUTURE · ON-POLICY DISTILLATION · 42:00</p>
+            <p class="kicker">FUTURE · ON-POLICY DISTILLATION</p>
             <h2>OPD lets the teacher correct mistakes the student actually makes</h2>
           </header>
           <div class="opd-loop">
@@ -736,7 +737,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="post-assessment-slide">
           <header>
-            <p class="kicker">POST-ASSESSMENT · 44:00–47:00</p>
+            <p class="kicker">POST-ASSESSMENT</p>
             <h2>Three sentences. Can you complete the lesson?</h2>
           </header>
           <div class="post-grid">
@@ -762,7 +763,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
 
         <section class="takeaway-slide" data-background-image="./assets/rl-maze-hero.png" data-background-opacity="0.20">
           <div class="takeaway-shade"></div>
-          <p class="kicker">SUMMARY · 47:00–50:00</p>
+          <p class="kicker">SUMMARY</p>
           <h2>The maze never disappeared.<br /><em>Its walls became language.</em></h2>
           <div class="takeaways">
             <p class="fragment fade-up"><span class="num">01</span><span class="takeaway-text">RL uses <strong>outcomes</strong> to change future behavior probabilities</span></p>
@@ -824,7 +825,7 @@ Shunyu Yao, The Second Half. https://ysymyth.github.io/The-Second-Half/</aside>
       <span class="theme-toggle-icon" aria-hidden="true"><i class="theme-sun">☀</i><i class="theme-moon">☾</i><b></b></span>
       <span id="theme-toggle-label">NIGHT</span>
     </button>
-    <div id="keyboard-hint" role="status">← → navigate · M slide rail · F full screen · S speaker view</div>
+    <div id="keyboard-hint" role="status">Arrow keys navigate · M slide rail · F full screen · S speaker view</div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

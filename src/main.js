@@ -22,8 +22,7 @@ const deck = new Reveal({
   margin: 0,
   minScale: 0.2,
   maxScale: 2,
-  controls: true,
-  controlsLayout: 'edges',
+  controls: false,
   progress: true,
   transition: 'fade',
   backgroundTransition: 'fade',
@@ -32,7 +31,7 @@ const deck = new Reveal({
 
 const deckReady = deck.initialize();
 
-const counter = document.querySelector('#slide-count');
+const counter = document.querySelector('#slide-page-number');
 const slideNavigator = document.querySelector('#slide-navigator');
 const slideRailList = document.querySelector('#slide-rail-list');
 const slidePeek = document.querySelector('#slide-peek');
@@ -170,6 +169,7 @@ function updateCounter() {
   const { h } = deck.getIndices();
   const total = deck.getHorizontalSlides().length;
   counter.textContent = `${pad(h + 1)} / ${pad(total)}`;
+  counter.setAttribute('aria-label', `Slide ${h + 1} of ${total}`);
   updateNavigator();
 }
 deckReady.then(() => {
