@@ -43,6 +43,91 @@ const themeToggle = document.querySelector('#theme-toggle');
 const themeToggleLabel = document.querySelector('#theme-toggle-label');
 const pad = (n) => String(n).padStart(2, '0');
 
+const elapsedTimer = document.createElement('button');
+elapsedTimer.id = 'elapsed-timer';
+elapsedTimer.className = 'elapsed-timer';
+elapsedTimer.type = 'button';
+elapsedTimer.setAttribute('aria-pressed', 'false');
+elapsedTimer.setAttribute('aria-describedby', 'elapsed-timer-help');
+elapsedTimer.innerHTML = `
+  <span class="elapsed-timer-icon" aria-hidden="true"><i></i></span>
+  <span class="elapsed-timer-label">TIMER</span>
+  <span id="elapsed-timer-tooltip" class="elapsed-timer-tooltip" role="tooltip">
+    <small>ELAPSED</small>
+    <output id="elapsed-timer-value">00:00:00</output>
+    <span id="elapsed-timer-help">Click to start or pause · Right-click to reset</span>
+  </span>
+`;
+themeToggle.insertAdjacentElement('afterend', elapsedTimer);
+
+const elapsedTimerValue = elapsedTimer.querySelector('#elapsed-timer-value');
+let elapsedMilliseconds = 0;
+let timerStartedAt = null;
+let timerAnimationFrame = null;
+
+function formatElapsed(milliseconds) {
+  const seconds = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+  return [hours, minutes, remainingSeconds].map(pad).join(':');
+}
+
+function currentElapsed(now = performance.now()) {
+  return elapsedMilliseconds + (timerStartedAt === null ? 0 : now - timerStartedAt);
+}
+
+function renderElapsedTimer(now = performance.now()) {
+  elapsedTimerValue.value = formatElapsed(currentElapsed(now));
+  if (timerStartedAt !== null) {
+    timerAnimationFrame = requestAnimationFrame(renderElapsedTimer);
+  }
+}
+
+function setTimerRunning(running) {
+  if (timerAnimationFrame !== null) cancelAnimationFrame(timerAnimationFrame);
+  timerAnimationFrame = null;
+
+  if (running) {
+    timerStartedAt = performance.now();
+  } else if (timerStartedAt !== null) {
+    elapsedMilliseconds += performance.now() - timerStartedAt;
+    timerStartedAt = null;
+  }
+
+  elapsedTimer.classList.toggle('is-running', running);
+  elapsedTimer.setAttribute('aria-pressed', String(running));
+  elapsedTimer.setAttribute('aria-label', `${running ? 'Pause' : 'Start'} presentation timer. Right-click to reset.`);
+  renderElapsedTimer();
+}
+
+function resetElapsedTimer() {
+  if (timerAnimationFrame !== null) cancelAnimationFrame(timerAnimationFrame);
+  timerAnimationFrame = null;
+  elapsedMilliseconds = 0;
+  timerStartedAt = null;
+  elapsedTimer.classList.remove('is-running');
+  elapsedTimer.setAttribute('aria-pressed', 'false');
+  elapsedTimer.setAttribute('aria-label', 'Start presentation timer. Right-click to reset.');
+  renderElapsedTimer();
+}
+
+elapsedTimer.addEventListener('click', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  setTimerRunning(timerStartedAt === null);
+});
+elapsedTimer.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  resetElapsedTimer();
+});
+elapsedTimer.addEventListener('pointerdown', (event) => event.stopPropagation());
+elapsedTimer.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
+});
+resetElapsedTimer();
+
 function setTheme(theme, persist = true) {
   const nextTheme = theme === 'light' ? 'light' : 'dark';
   const isLight = nextTheme === 'light';
