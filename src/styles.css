@@ -73,6 +73,13 @@ body { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Se
 .outcome-route { margin-top: 44px !important; color: rgba(244,240,231,.38); font: 650 14px ui-monospace, monospace !important; letter-spacing: .11em !important; }
 .outcome-route span { color: var(--paper); }
 
+.contents-slide { background: radial-gradient(circle at 88% 16%, rgba(111,156,255,.10), transparent 31%); }
+.contents-list { margin-top: 44px; border-top: 1px solid rgba(244,240,231,.17); }
+.contents-list article { display: grid; grid-template-columns: 72px 330px 1fr; align-items: baseline; min-height: 92px; padding: 20px 0; border-bottom: 1px solid rgba(244,240,231,.13); }
+.contents-list span { color: var(--coral); font: 750 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .13em; }
+.contents-list b { color: var(--paper); font-size: 27px; line-height: 1.2; }
+.contents-list p { color: var(--muted); font-size: 19px; line-height: 1.35; }
+
 .prereq-slide { background: linear-gradient(135deg, rgba(111,156,255,.07), transparent 52%); }
 .prereq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; }
 .prereq-grid > article { min-height: 455px; padding: 34px 42px; border: 1px solid rgba(244,240,231,.14); background: rgba(13,27,46,.66); }
@@ -652,6 +659,7 @@ html[data-theme="light"] .candidate.c2 { border-color: rgba(8,121,109,.40); box-
 html[data-theme="light"] :is(.outcome-route, .noise-cloud span, .pipeline article > span, .pipe-arrow, .opd-arrow, .verifier-equation > i, .other-futures small) { color: rgba(20,34,56,.45); }
 html[data-theme="light"] :is(.grpo-group p, .candidate code, .exception-note p, .compare-row p, .post-grid p) { color: #26384e; }
 html[data-theme="light"] :is(.video-prompts, .video-prompts > p, .pipeline-caption, .mapping-labels article, .critic-callout, .credit-caveat, .grpo-memory, .research-questions article, .search-starters, .ai-research-prompt > p, .comparison-board-head, .comparison-board-row, .discussion-questions p, .discussion-synthesis, .prior-field, .rlvr-why p, .exception-note, .compare-head, .compare-row, .opd-bottom p, .sources-columns > div, .sources-columns a) { border-color: rgba(20,34,56,.15); }
+html[data-theme="light"] :is(.contents-list, .contents-list article) { border-color: rgba(20,34,56,.15); }
 html[data-theme="light"] .comparison-board { border-color: #315fa8; }
 html[data-theme="light"] .comparison-board-row { background: linear-gradient(90deg, rgba(49,95,168,.05), transparent); }
 html[data-theme="light"] .search-starters a { border-color: rgba(8,121,109,.28); }
